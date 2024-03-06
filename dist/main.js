@@ -16,7 +16,7 @@
   \*************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/noSourceMaps.js */ \"./node_modules/css-loader/dist/runtime/noSourceMaps.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);\n// Imports\n\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, `body {\r\n  background-color: #dad2d8;\r\n}\r\n\r\n#container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#search-bar {\r\n  width: 50px;\r\n  height: 50px;\r\n  border-radius: 50px;\r\n  background-color: #143642;\r\n  display: grid;\r\n}\r\n\r\n.gg-search {\r\n  justify-self: center;\r\n  align-self: center;\r\n  /* box-sizing: border-box; */\r\n  /* position: relative; */\r\n  /* display: block; */\r\n  transform: scale(var(--ggs, 1));\r\n  width: 16px;\r\n  height: 16px;\r\n  border: 2px solid;\r\n  border-radius: 100%;\r\n  margin-left: -4px;\r\n  margin-top: -4px;\r\n  color: white;\r\n}\r\n.gg-search::after {\r\n  content: \"\";\r\n  display: block;\r\n  box-sizing: border-box;\r\n  position: absolute;\r\n  border-radius: 3px;\r\n  width: 2px;\r\n  height: 8px;\r\n  background: currentColor;\r\n  transform: rotate(-45deg);\r\n  top: 10px;\r\n  left: 12px;\r\n}\r\n`, \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack://webpack-template/./src/style.css?./node_modules/css-loader/dist/cjs.js");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/noSourceMaps.js */ \"./node_modules/css-loader/dist/runtime/noSourceMaps.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);\n// Imports\n\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, `body {\r\n  background-color: #bfbcff;\r\n  font-family: system-ui, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif,\r\n    \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\r\n}\r\n\r\n#container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n}\r\n\r\n#search-area {\r\n  display: flex;\r\n  gap: 10px;\r\n  flex-direction: column;\r\n  width: 600px;\r\n}\r\n\r\n#search-bar {\r\n  height: 50px;\r\n  border-radius: 50px;\r\n  background-color: white;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n@media (max-width: 600px) {\r\n  #search-area {\r\n    width: 100%; /* Make the width 100% to fill the smaller screen */\r\n  }\r\n}\r\n\r\n#search-icon-area {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  width: 40px;\r\n  height: 40px;\r\n  margin-right: 7px;\r\n  border-radius: 50%;\r\n  background-color: #5650cc;\r\n}\r\n\r\n#search-input-area {\r\n  flex-grow: 1;\r\n  color: #acacac;\r\n  padding-inline: 20px;\r\n}\r\n\r\n#search-icon {\r\n  width: 20px;\r\n  height: 20px;\r\n  margin-right: 17px;\r\n  color: white;\r\n}\r\n\r\n#search-result-section {\r\n  background-color: white;\r\n  min-height: 30px;\r\n  border-radius: 7px;\r\n  font-weight: 400;\r\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n#search-result-section p {\r\n  margin-left: 20px;\r\n}\r\n`, \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack://webpack-template/./src/style.css?./node_modules/css-loader/dist/cjs.js");
 
 /***/ }),
 
@@ -116,7 +116,17 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\r\n\r\nlet container = document.querySelector(\"#container\");\r\nlet heading = document.createElement(\"h1\");\r\nheading.textContent = \"Pug Weather\";\r\ncontainer.appendChild(heading);\r\n\r\nlet searchBar = document.createElement(\"div\");\r\nsearchBar.id = \"search-bar\";\r\ncontainer.appendChild(searchBar);\r\n\r\nlet searchbutton = document.createElement(\"button\");\r\nsearchbutton.className = \"gg-search\";\r\nsearchbutton.style.marginLeft = \"18px\";\r\nsearchBar.appendChild(searchbutton);\r\n\r\nlet apiUrl =\r\n  \"http://api.weatherapi.com/v1/current.json?key=a5e4fed568014feea07121139242401&q=wroclaw&aqi=no\";\r\n\r\nfetch(apiUrl, { mode: \"cors\" })\r\n  .then(function (response) {\r\n    return response.json();\r\n  })\r\n  .then(function (response) {\r\n    console.log(`Current temperature: ${response.current.temp_c}`);\r\n  })\r\n  .catch(function (err) {\r\n    // Error :(\r\n  });\r\n\n\n//# sourceURL=webpack://webpack-template/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _graphics_search_alt_1_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./graphics/search-alt-1-svgrepo-com.svg */ \"./src/graphics/search-alt-1-svgrepo-com.svg\");\n\r\n\r\n\r\nfunction getCurrentTemerature(location) {\r\n  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=a5e4fed568014feea07121139242401&q=${location}&aqi=no`;\r\n\r\n  fetch(apiUrl, { mode: \"cors\" })\r\n    .then(function (response) {\r\n      return response.json();\r\n    })\r\n    .then(function (response) {\r\n      console.log(`Current temperature: ${response.current.temp_c}`);\r\n    })\r\n    .catch(function (err) {\r\n      // Error :(\r\n    });\r\n}\r\n\r\nlet onClickOutside = (element, callback) => {\r\n  document.addEventListener(\"click\", (e) => {\r\n    if (!element.contains(e.target)) callback();\r\n  });\r\n};\r\n\r\nlet container = document.querySelector(\"#container\");\r\nlet heading = document.createElement(\"h1\");\r\nheading.textContent = \"Pug Weather\";\r\nheading.style.color = \"#5751CC\";\r\ncontainer.appendChild(heading);\r\n\r\nlet searchArea = document.createElement(\"div\");\r\nsearchArea.id = \"search-area\";\r\ncontainer.appendChild(searchArea);\r\n\r\nlet searchBar = document.createElement(\"div\");\r\nsearchBar.id = \"search-bar\";\r\nsearchArea.appendChild(searchBar);\r\n\r\nlet searchInputArea = document.createElement(\"div\");\r\nsearchInputArea.id = \"search-input-area\";\r\nsearchInputArea.textContent = \"Search Location\";\r\nsearchBar.appendChild(searchInputArea);\r\n\r\nlet searchIconArea = document.createElement(\"div\");\r\nsearchIconArea.id = \"search-icon-area\";\r\nsearchBar.appendChild(searchIconArea);\r\n\r\nlet searchIcon = document.createElement(\"img\");\r\nsearchIcon.src = _graphics_search_alt_1_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__;\r\nsearchIcon.alt = \"search icon\";\r\nsearchIcon.id = \"search-icon\";\r\nsearchIcon.style.marginLeft = \"18px\";\r\nsearchIconArea.appendChild(searchIcon);\r\n\r\nlet searchResultSection = document.createElement(\"div\");\r\nsearchResultSection.id = \"search-result-section\";\r\nsearchArea.appendChild(searchResultSection);\r\n\r\nlet textElements = [\r\n  \"This is the first text element\",\r\n  \"This is the second text element\",\r\n  \"This is the third text element\",\r\n];\r\n\r\nfor (let index = 0; index < textElements.length; index++) {\r\n  let paragraph = document.createElement(\"p\");\r\n  paragraph.textContent = textElements[index];\r\n  searchResultSection.appendChild(paragraph);\r\n}\r\n\r\nsearchBar.addEventListener(\"click\", () => {\r\n  searchInputArea.textContent = \"siema\";\r\n});\r\n\r\nonClickOutside(\r\n  searchBar,\r\n  () => (searchInputArea.textContent = \"Search Location\")\r\n);\r\n\n\n//# sourceURL=webpack://webpack-template/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/graphics/search-alt-1-svgrepo-com.svg":
+/*!***************************************************!*\
+  !*** ./src/graphics/search-alt-1-svgrepo-com.svg ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("module.exports = __webpack_require__.p + \"86c32af5828de049ca80.svg\";\n\n//# sourceURL=webpack://webpack-template/./src/graphics/search-alt-1-svgrepo-com.svg?");
 
 /***/ })
 
@@ -171,6 +181,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sty
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -185,6 +207,29 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sty
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && !scriptUrl) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */

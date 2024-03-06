@@ -1,5 +1,7 @@
 body {
-  background-color: #dad2d8;
+  background-color: #bfbcff;
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 #container {
@@ -8,39 +10,61 @@ body {
   align-items: center;
 }
 
-#search-bar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  background-color: #143642;
-  display: grid;
+#search-area {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  width: 600px;
 }
 
-.gg-search {
-  justify-self: center;
-  align-self: center;
-  /* box-sizing: border-box; */
-  /* position: relative; */
-  /* display: block; */
-  transform: scale(var(--ggs, 1));
-  width: 16px;
-  height: 16px;
-  border: 2px solid;
-  border-radius: 100%;
-  margin-left: -4px;
-  margin-top: -4px;
+#search-bar {
+  height: 50px;
+  border-radius: 50px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+  #search-area {
+    width: 100%; /* Make the width 100% to fill the smaller screen */
+  }
+}
+
+#search-icon-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background-color: #5650cc;
+}
+
+#search-input-area {
+  flex-grow: 1;
+  color: #acacac;
+  padding-inline: 20px;
+}
+
+#search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 17px;
   color: white;
 }
-.gg-search::after {
-  content: "";
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  border-radius: 3px;
-  width: 2px;
-  height: 8px;
-  background: currentColor;
-  transform: rotate(-45deg);
-  top: 10px;
-  left: 12px;
+
+#search-result-section {
+  background-color: white;
+  min-height: 30px;
+  border-radius: 7px;
+  font-weight: 400;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#search-result-section p {
+  margin-left: 20px;
 }
