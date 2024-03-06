@@ -1,29 +1,78 @@
 import "./style.css";
+import searchIconImg from "./graphics/search-alt-1-svgrepo-com.svg";
+
+function getCurrentTemerature(location) {
+  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=${location}&aqi=no`;
+
+  fetch(apiUrl, { mode: "cors" })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (response) {
+      console.log(`Current temperature: ${response.current.temp_c}`);
+    })
+    .catch(function (err) {
+      // Error :(
+    });
+}
+
+let onClickOutside = (element, callback) => {
+  document.addEventListener("click", (e) => {
+    if (!element.contains(e.target)) callback();
+  });
+};
 
 let container = document.querySelector("#container");
 let heading = document.createElement("h1");
 heading.textContent = "Pug Weather";
+heading.style.color = "#5751CC";
 container.appendChild(heading);
+
+let searchArea = document.createElement("div");
+searchArea.id = "search-area";
+container.appendChild(searchArea);
 
 let searchBar = document.createElement("div");
 searchBar.id = "search-bar";
-container.appendChild(searchBar);
+searchArea.appendChild(searchBar);
 
-let searchbutton = document.createElement("button");
-searchbutton.className = "gg-search";
-searchbutton.style.marginLeft = "18px";
-searchBar.appendChild(searchbutton);
+let searchInputArea = document.createElement("div");
+searchInputArea.id = "search-input-area";
+searchInputArea.textContent = "Search Location";
+searchBar.appendChild(searchInputArea);
 
-let apiUrl =
-  "http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=wroclaw&aqi=no";
+let searchIconArea = document.createElement("div");
+searchIconArea.id = "search-icon-area";
+searchBar.appendChild(searchIconArea);
 
-fetch(apiUrl, { mode: "cors" })
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (response) {
-    console.log(`Current temperature: ${response.current.temp_c}`);
-  })
-  .catch(function (err) {
-    // Error :(
-  });
+let searchIcon = document.createElement("img");
+searchIcon.src = searchIconImg;
+searchIcon.alt = "search icon";
+searchIcon.id = "search-icon";
+searchIcon.style.marginLeft = "18px";
+searchIconArea.appendChild(searchIcon);
+
+let searchResultSection = document.createElement("div");
+searchResultSection.id = "search-result-section";
+searchArea.appendChild(searchResultSection);
+
+let textElements = [
+  "This is the first text element",
+  "This is the second text element",
+  "This is the third text element",
+];
+
+for (let index = 0; index < textElements.length; index++) {
+  let paragraph = document.createElement("p");
+  paragraph.textContent = textElements[index];
+  searchResultSection.appendChild(paragraph);
+}
+
+searchBar.addEventListener("click", () => {
+  searchInputArea.textContent = "siema";
+});
+
+onClickOutside(
+  searchBar,
+  () => (searchInputArea.textContent = "Search Location")
+);
