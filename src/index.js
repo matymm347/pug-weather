@@ -16,12 +16,6 @@ function getCurrentTemerature(location) {
     });
 }
 
-let onClickOutside = (element, callback) => {
-  document.addEventListener("click", (e) => {
-    if (!element.contains(e.target)) callback();
-  });
-};
-
 let container = document.querySelector("#container");
 let heading = document.createElement("h1");
 heading.textContent = "Pug Weather";
@@ -36,9 +30,9 @@ let searchBar = document.createElement("div");
 searchBar.id = "search-bar";
 searchArea.appendChild(searchBar);
 
-let searchInputArea = document.createElement("div");
+let searchInputArea = document.createElement("input");
 searchInputArea.id = "search-input-area";
-searchInputArea.textContent = "Search Location";
+searchInputArea.placeholder = "Search Location";
 searchBar.appendChild(searchInputArea);
 
 let searchIconArea = document.createElement("div");
@@ -72,7 +66,17 @@ searchBar.addEventListener("click", () => {
   searchInputArea.textContent = "siema";
 });
 
-onClickOutside(
-  searchBar,
-  () => (searchInputArea.textContent = "Search Location")
-);
+function fetchData() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("Data received!"), 2000);
+  });
+}
+
+async function example() {
+  console.log("Start");
+  const result = await fetchData();
+  console.log(result);
+  console.log("End");
+}
+
+example();
