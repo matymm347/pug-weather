@@ -64,19 +64,5 @@ for (let index = 0; index < textElements.length; index++) {
 
 searchBar.addEventListener("click", () => {
   searchInputArea.textContent = "siema";
+  searchInputArea.focus();
 });
-
-function fetchData() {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve("Data received!"), 2000);
-  });
-}
-
-async function example() {
-  console.log("Start");
-  const result = await fetchData();
-  console.log(result);
-  console.log("End");
-}
-
-example();
