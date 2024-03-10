@@ -2,17 +2,56 @@ import "./style.css";
 import searchIconImg from "./graphics/search-alt-1-svgrepo-com.svg";
 
 async function fillSearchHints(searchArea, userInput) {
-  let apiSearchURLBase = `http://api.weatherapi.com/v1/search.json?key=a5e4fed568014feea07121139242401&q=${userInput}`;
+  userInput = replacePolishChars(userInput);
+  let apiSearchURLBase = `http://api.weatherapi.com/v1/search.json?key=a5e4fed568014feea07121139242401&q=${userInput}&lang=pl`;
 
   const cityList = await fetch(apiSearchURLBase, { mode: "cors" }).then(
     (response) => response.json()
   );
 
-  for (let index = 0; index < cityList.length; index++) {
+  if (Object.keys(cityList).length === 0) {
     let paragraph = document.createElement("p");
-    paragraph.textContent = `${cityList[index].name}, ${cityList[index].country}`;
+    paragraph.textContent = "No matches found";
     searchArea.appendChild(paragraph);
+  } else {
+    for (let index = 0; index < cityList.length; index++) {
+      let button = document.createElement("button");
+      button.textContent = `${cityList[index].name}, ${cityList[index].country}`;
+      searchArea.appendChild(button);
+    }
   }
+}
+
+function replacePolishChars(inputString) {
+  const polishLettersMapping = {
+    ą: "a",
+    ć: "c",
+    ę: "e",
+    ł: "l",
+    ń: "n",
+    ó: "o",
+    ś: "s",
+    ź: "z",
+    ż: "z",
+    Ą: "A",
+    Ć: "C",
+    Ę: "E",
+    Ł: "L",
+    Ń: "N",
+    Ó: "O",
+    Ś: "S",
+    Ź: "Z",
+    Ż: "Z",
+  };
+
+  // Replace Polish letters with their non-diacritic equivalents
+  let resultString = "";
+  for (let i = 0; i < inputString.length; i++) {
+    const currentChar = inputString.charAt(i);
+    resultString += polishLettersMapping[currentChar] || currentChar;
+  }
+
+  return resultString;
 }
 
 function getCurrentTemerature(location) {
@@ -83,6 +122,16 @@ searchInputArea.addEventListener("keydown", (event) => {
     return;
   }
 
+  if (event.key === "ArrowUp") {
+    return;
+  } else if (event.key === "ArrowDown") {
+    return;
+  } else if (event.key === "ArrowLeft") {
+    return;
+  } else if (event.key === "ArrowRight") {
+    return;
+  }
+
   if (event.key === "Enter") {
     // Submit search result
   }
@@ -103,5 +152,5 @@ searchInputArea.addEventListener("keydown", (event) => {
       fillSearchHints(searchResultSection, searchInputArea.value);
       //
     }
-  }, 500);
+  }, 200);
 });
