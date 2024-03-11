@@ -79,12 +79,14 @@ function setupTopNowCardGrid(container) {
   topNowCardGrid.style.direction = "row";
 
   let backbutton = setupBackButton();
-  let switchMarker = setupDaySwitchMarker(3);
+  let switchMarker = setupDaySwitchMarker(0);
   topNowCardGrid.appendChild(backbutton);
   topNowCardGrid.appendChild(switchMarker);
 
   container.appendChild(topNowCardGrid);
 }
+
+function setUpTempSwitch(unit) {}
 
 function setUpNowCard(container) {
   let nowCard = document.createElement("div");

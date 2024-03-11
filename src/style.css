@@ -102,8 +102,8 @@ p {
   height: 100vh;
 }
 
-#info-grid div {
-  border: 1px solid red;
+#now-card {
+  border: solid 1px red;
 }
 
 #back-button-area {
@@ -124,6 +124,7 @@ p {
 
 #top-now-card-grid {
   display: grid;
+  justify-items: center;
 }
 
 #switch-container {
@@ -133,17 +134,19 @@ p {
 }
 
 #current-position-element {
-  flex-grow: 4;
+  /* flex-grow: 4; */
   border-radius: 7px;
+  width: 15px;
+  background-color: white;
 }
 
 .switch-background-element {
-  flex-grow: 1;
-  border-radius: 100%;
+  border-radius: 50%;
+  width: 5px;
+  background-color: rgb(197, 195, 195);
 }
 
 #switch-container div {
-  background-color: white;
-  height: 10px;
-  margin: 2px;
+  height: 5px;
+  margin: 1px;
 }
