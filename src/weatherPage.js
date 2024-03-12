@@ -51,13 +51,6 @@ class DaySwitchMarker {
     this.currentPositionElement.style.order = 0;
     this.switchContainer.appendChild(this.currentPositionElement);
 
-    // for (let index = 1; index < 7; index + 2) {
-    //   this.backgroundPositionElement = document.createElement("div");
-    //   this.backgroundPositionElement.style.order = index;
-    //   this.backgroundPositionElement.className =
-    //     "switch-background-element switch-element";
-    //   this.switchContainer.appendChild(this.backgroundPositionElement);
-    // }
     this.backgroundPositionElement1 = document.createElement("div");
     this.backgroundPositionElement1.style.order = "1";
     this.backgroundPositionElement1.className =
@@ -97,6 +90,61 @@ class DaySwitchMarker {
   }
 }
 
+class BackButton {
+  constructor() {
+    this.backButtonArea = document.createElement("div");
+    this.backButtonArea.id = "back-button-area";
+
+    this.backButton = document.createElement("img");
+    this.backButton.src = backIconSvg;
+    this.backButton.id = "back-button";
+    this.backButton.alt = "back";
+    this.backButtonArea.appendChild(this.backButton);
+  }
+
+  get domGroup() {
+    return this.backButtonArea;
+  }
+}
+
+class CityRow {
+  constructor() {
+    this.container = document.createElement("div");
+    this.container.id = "city-row-grid";
+
+    this.location = document.createElement("div");
+    this.location.className = "city-row-elements";
+    this.location.id = "city-row-location";
+
+    this.sunRise = document.createElement("div");
+
+    this.sunSet = document.createElement("div");
+
+    this.date = document.createElement("div");
+
+    this.container.appendChild(this.location);
+    this.container.appendChild(this.sunRise);
+    this.container.appendChild(this.date);
+    this.container.appendChild(this.sunSet);
+  }
+
+  updateLocation(city, country) {
+    this.location.textContent = city + ", " + country;
+  }
+
+  updateSunRise(time) {
+    this.sunRise.textContent = time;
+  }
+
+  updateSunSet(time) {
+    this.sunSet.textContent = time;
+  }
+
+  updateDate(date) {
+    this.date.textContent = date;
+  }
+}
+
 function getCurrentTemerature(locationId) {
   let apiUrl = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
 
@@ -112,110 +160,21 @@ function getCurrentTemerature(locationId) {
     });
 }
 
-function setupBackButton() {
-  let backButtonArea = document.createElement("div");
-  backButtonArea.id = "back-button-area";
-
-  let backButton = document.createElement("img");
-  backButton.src = backIconSvg;
-  backButton.id = "back-button";
-  backButton.alt = "back";
-  backButtonArea.appendChild(backButton);
-
-  return backButtonArea;
-}
-
-function setupDaySwitchMarker(currentDay) {
-  let switchContainer = document.createElement("div");
-  switchContainer.id = "switch-container";
-
-  let currentPositionElement = document.createElement("div");
-  currentPositionElement.id = "current-position-element";
-  currentPositionElement.className = "switch-element";
-  switchContainer.appendChild(currentPositionElement);
-
-  switch (currentDay) {
-    case 0:
-      currentPositionElement.style.order = 0;
-      break;
-    case 1:
-      currentPositionElement.style.order = 2;
-      break;
-    case 2:
-      currentPositionElement.style.order = 4;
-      break;
-    case 3:
-      currentPositionElement.style.order = 6;
-      break;
-  }
-
-  let backgroundPositionElement1 = document.createElement("div");
-  backgroundPositionElement1.style.order = "1";
-  backgroundPositionElement1.className =
-    "switch-background-element switch-element";
-  switchContainer.appendChild(backgroundPositionElement1);
-  let backgroundPositionElement2 = document.createElement("div");
-  backgroundPositionElement2.style.order = "3";
-  backgroundPositionElement2.className =
-    "switch-background-element switch-element";
-  switchContainer.appendChild(backgroundPositionElement2);
-  let backgroundPositionElement3 = document.createElement("div");
-  backgroundPositionElement3.style.order = "5";
-  backgroundPositionElement3.className =
-    "switch-background-element switch-element";
-  switchContainer.appendChild(backgroundPositionElement3);
-
-  return switchContainer;
-}
-
 function setupTopNowCardGrid(container) {
   let topNowCardGrid = document.createElement("div");
   topNowCardGrid.id = "top-now-card-grid";
   topNowCardGrid.style.gridTemplateColumns = "1fr 1fr 1fr";
   topNowCardGrid.style.direction = "row";
 
-  let backbutton = setupBackButton();
+  let backbutton = new BackButton();
   let daySwitchMarker = new DaySwitchMarker();
   let tempSwitch = new TempSwitch();
 
-  topNowCardGrid.appendChild(backbutton);
+  topNowCardGrid.appendChild(backbutton.domGroup);
   topNowCardGrid.appendChild(daySwitchMarker.domGrid);
   topNowCardGrid.appendChild(tempSwitch.domGrid);
 
   container.appendChild(topNowCardGrid);
-}
-
-function setUpTempSwitch(unit) {
-  let tempSwitchGrid = document.createElement("div");
-  tempSwitchGrid.id = "temp-switch-grid";
-
-  let celsiusText = document.createElement("div");
-  celsiusText.textContent = "°C";
-  celsiusText.className = "temp-switch-unit-text";
-  tempSwitchGrid.appendChild(celsiusText);
-
-  let currentTempCircle = document.createElement("div");
-  currentTempCircle.id = "temp-switch-circle";
-  tempSwitchGrid.appendChild(currentTempCircle);
-
-  let backgroundBar = document.createElement("div");
-  backgroundBar.id = "temp-switch-background-bar";
-  tempSwitchGrid.appendChild(backgroundBar);
-
-  let farenheitText = document.createElement("div");
-  farenheitText.textContent = "°F";
-  farenheitText.className = "temp-switch-unit-text";
-  tempSwitchGrid.appendChild(farenheitText);
-
-  switch (unit) {
-    case "celcius":
-      currentTempCircle.style.gridColumn = "2";
-      break;
-    case "farenheit":
-      currentTempCircle.style.gridColumn = "3";
-  }
-
-  return tempSwitchGrid;
 }
 
 function setUpNowCard(container) {
@@ -235,7 +194,16 @@ function setUpDetailCard(container) {
   container.appendChild(detailCard);
 }
 
+async function getApiData(locationId) {
+  let apiURL = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
+  return await fetch(apiURL, { mode: "cors" }).then((response) =>
+    response.json()
+  );
+}
+
 function setUpWeatherPage(locationId) {
+  console.log(getApiData(locationId));
+
   let container = document.querySelector("#container");
   while (container.firstChild) {
     container.removeChild(container.firstChild);
