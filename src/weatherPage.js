@@ -115,17 +115,25 @@ class CityRow {
     this.location = document.createElement("div");
     this.location.className = "city-row-elements";
     this.location.id = "city-row-location";
+    this.location.textContent = "ltest";
 
     this.sunRise = document.createElement("div");
+    this.sunRise.textContent = "srtest";
 
     this.sunSet = document.createElement("div");
+    this.sunSet.textContent = "sstest";
 
     this.date = document.createElement("div");
+    this.date.textContent = "dtest";
 
     this.container.appendChild(this.location);
     this.container.appendChild(this.sunRise);
     this.container.appendChild(this.date);
     this.container.appendChild(this.sunSet);
+  }
+
+  get domGrid() {
+    return this.container;
   }
 
   updateLocation(city, country) {
@@ -183,7 +191,8 @@ function setUpNowCard(container) {
   nowCard.id = "now-card";
 
   setupTopNowCardGrid(nowCard);
-
+  let cityRow = new CityRow();
+  nowCard.appendChild(cityRow.domGrid);
   container.appendChild(nowCard);
 }
 
@@ -201,8 +210,10 @@ async function getApiData(locationId) {
   );
 }
 
-function setUpWeatherPage(locationId) {
-  console.log(getApiData(locationId));
+async function setUpWeatherPage(locationId) {
+  // some animation should be played during fetching in case of API long response
+
+  const apiResponse = await getApiData(locationId);
 
   let container = document.querySelector("#container");
   while (container.firstChild) {
