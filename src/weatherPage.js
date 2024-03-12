@@ -1,6 +1,102 @@
 import { createHomeTitle } from "./homePage";
 import backIconSvg from "./graphics/back-svgrepo-com.svg";
 
+class TempSwitch {
+  constructor() {
+    this.tempSwitchGrid = document.createElement("div");
+    this.tempSwitchGrid.id = "temp-switch-grid";
+
+    this.celsiusText = document.createElement("div");
+    this.celsiusText.textContent = "°C";
+    this.celsiusText.className = "temp-switch-unit-text";
+    this.tempSwitchGrid.appendChild(this.celsiusText);
+
+    this.currentTempCircle = document.createElement("div");
+    this.currentTempCircle.id = "temp-switch-circle";
+    this.tempSwitchGrid.appendChild(this.currentTempCircle);
+
+    this.backgroundBar = document.createElement("div");
+    this.backgroundBar.id = "temp-switch-background-bar";
+    this.tempSwitchGrid.appendChild(this.backgroundBar);
+
+    this.farenheitText = document.createElement("div");
+    this.farenheitText.textContent = "°F";
+    this.farenheitText.className = "temp-switch-unit-text";
+    this.tempSwitchGrid.appendChild(this.farenheitText);
+  }
+
+  get domGrid() {
+    return this.tempSwitchGrid;
+  }
+
+  switchTemp(unit) {
+    switch (unit) {
+      case "celcius":
+        this.currentTempCircle.style.gridColumn = "2";
+        break;
+      case "farenheit":
+        this.currentTempCircle.style.gridColumn = "3";
+    }
+  }
+}
+
+class DaySwitchMarker {
+  constructor() {
+    this.switchContainer = document.createElement("div");
+    this.switchContainer.id = "switch-container";
+
+    this.currentPositionElement = document.createElement("div");
+    this.currentPositionElement.id = "current-position-element";
+    this.currentPositionElement.className = "switch-element";
+    this.currentPositionElement.style.order = 0;
+    this.switchContainer.appendChild(this.currentPositionElement);
+
+    // for (let index = 1; index < 7; index + 2) {
+    //   this.backgroundPositionElement = document.createElement("div");
+    //   this.backgroundPositionElement.style.order = index;
+    //   this.backgroundPositionElement.className =
+    //     "switch-background-element switch-element";
+    //   this.switchContainer.appendChild(this.backgroundPositionElement);
+    // }
+    this.backgroundPositionElement1 = document.createElement("div");
+    this.backgroundPositionElement1.style.order = "1";
+    this.backgroundPositionElement1.className =
+      "switch-background-element switch-element";
+    this.switchContainer.appendChild(this.backgroundPositionElement1);
+    this.backgroundPositionElement2 = document.createElement("div");
+    this.backgroundPositionElement2.style.order = "3";
+    this.backgroundPositionElement2.className =
+      "switch-background-element switch-element";
+    this.switchContainer.appendChild(this.backgroundPositionElement2);
+    this.backgroundPositionElement3 = document.createElement("div");
+    this.backgroundPositionElement3.style.order = "5";
+    this.backgroundPositionElement3.className =
+      "switch-background-element switch-element";
+    this.switchContainer.appendChild(this.backgroundPositionElement3);
+  }
+
+  get domGrid() {
+    return this.switchContainer;
+  }
+
+  switchDay(currentDay) {
+    switch (currentDay) {
+      case 0:
+        this.currentPositionElement.style.order = 0;
+        break;
+      case 1:
+        this.currentPositionElement.style.order = 2;
+        break;
+      case 2:
+        this.currentPositionElement.style.order = 4;
+        break;
+      case 3:
+        this.currentPositionElement.style.order = 6;
+        break;
+    }
+  }
+}
+
 function getCurrentTemerature(locationId) {
   let apiUrl = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
 
@@ -79,11 +175,12 @@ function setupTopNowCardGrid(container) {
   topNowCardGrid.style.direction = "row";
 
   let backbutton = setupBackButton();
-  let switchMarker = setupDaySwitchMarker(0);
-  let tempSwitchGrid = setUpTempSwitch("celcius");
+  let daySwitchMarker = new DaySwitchMarker();
+  let tempSwitch = new TempSwitch();
+
   topNowCardGrid.appendChild(backbutton);
-  topNowCardGrid.appendChild(switchMarker);
-  topNowCardGrid.appendChild(tempSwitchGrid);
+  topNowCardGrid.appendChild(daySwitchMarker.domGrid);
+  topNowCardGrid.appendChild(tempSwitch.domGrid);
 
   container.appendChild(topNowCardGrid);
 }
