@@ -181,3 +181,16 @@ p {
   font-size: small;
   color: white;
 }
+
+#city-row-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.city-row-elements {
+  color: white;
+}
+
+#city-row-location {
+}
