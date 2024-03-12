@@ -80,13 +80,46 @@ function setupTopNowCardGrid(container) {
 
   let backbutton = setupBackButton();
   let switchMarker = setupDaySwitchMarker(0);
+  let tempSwitchGrid = setUpTempSwitch("celcius");
   topNowCardGrid.appendChild(backbutton);
   topNowCardGrid.appendChild(switchMarker);
+  topNowCardGrid.appendChild(tempSwitchGrid);
 
   container.appendChild(topNowCardGrid);
 }
 
-function setUpTempSwitch(unit) {}
+function setUpTempSwitch(unit) {
+  let tempSwitchGrid = document.createElement("div");
+  tempSwitchGrid.id = "temp-switch-grid";
+
+  let celsiusText = document.createElement("div");
+  celsiusText.textContent = "°C";
+  celsiusText.className = "temp-switch-unit-text";
+  tempSwitchGrid.appendChild(celsiusText);
+
+  let currentTempCircle = document.createElement("div");
+  currentTempCircle.id = "temp-switch-circle";
+  tempSwitchGrid.appendChild(currentTempCircle);
+
+  let backgroundBar = document.createElement("div");
+  backgroundBar.id = "temp-switch-background-bar";
+  tempSwitchGrid.appendChild(backgroundBar);
+
+  let farenheitText = document.createElement("div");
+  farenheitText.textContent = "°F";
+  farenheitText.className = "temp-switch-unit-text";
+  tempSwitchGrid.appendChild(farenheitText);
+
+  switch (unit) {
+    case "celcius":
+      currentTempCircle.style.gridColumn = "2";
+      break;
+    case "farenheit":
+      currentTempCircle.style.gridColumn = "3";
+  }
+
+  return tempSwitchGrid;
+}
 
 function setUpNowCard(container) {
   let nowCard = document.createElement("div");
