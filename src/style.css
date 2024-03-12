@@ -112,8 +112,8 @@ p {
   align-items: center;
   width: 40px;
   height: 40px;
-  margin-right: 7px;
   border-radius: 50%;
+  margin: 15px;
   background-color: #5650cc;
 }
 
@@ -129,24 +129,55 @@ p {
 
 #switch-container {
   display: flex;
-  /* justify-content: space-evenly; */
   align-items: center;
 }
 
 #current-position-element {
-  /* flex-grow: 4; */
   border-radius: 7px;
-  width: 15px;
+  width: 17px;
   background-color: white;
 }
 
 .switch-background-element {
   border-radius: 50%;
-  width: 5px;
-  background-color: rgb(197, 195, 195);
+  width: 8px;
+  background-color: rgb(102, 99, 99);
 }
 
 #switch-container div {
-  height: 5px;
+  height: 8px;
   margin: 1px;
+}
+
+#temp-switch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+#temp-switch-background-bar {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+  height: 12px;
+  width: 20px;
+  background-color: rgb(102, 99, 99);
+  margin-inline: 2px;
+  border-radius: 10px;
+}
+
+#temp-switch-circle {
+  grid-column: 2;
+  grid-row: 1;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: white;
+  margin-inline: 2px;
+}
+
+.temp-switch-unit-text {
+  font-size: small;
+  color: white;
 }
