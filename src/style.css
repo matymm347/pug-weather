@@ -184,6 +184,8 @@ p {
 
 #city-row-grid {
   display: grid;
+  align-items: center;
+  justify-items: center;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
 }
