@@ -184,23 +184,43 @@ class CityRow {
   }
 }
 
-class temperatureRow {
+class TemperatureRow {
   constructor(apiResponse) {
+    let startingTemp = apiResponse.current.temp_c;
+
     this.tempRow = document.createElement("div");
     this.tempRow.id = "temp-row";
 
     this.currentTemp = document.createElement("div");
     this.currentTemp.id = "current-temp";
+    this.currentTemp.textContent = startingTemp + "°";
 
     this.leftArrow = document.createElement("img");
     this.leftArrow.src = leftIconSvg;
+    this.leftArrow.className = "temp-row-arrow";
+    this.leftArrow.id = "temp-row-arrow-left";
 
     this.rightArrow = document.createElement("img");
     this.rightArrow.src = rightIconSvg;
+    this.rightArrow.className = "temp-row-arrow";
+    this.rightArrow.id = "temp-row-arrow-right";
 
     this.tempRow.appendChild(this.leftArrow);
     this.tempRow.appendChild(this.currentTemp);
     this.tempRow.appendChild(this.rightArrow);
+  }
+
+  updateTemp(daynr, apiResponse) {
+    if (daynr === 0) {
+      this.currentTemp.textContent = apiResponse.current.temp_c + "°";
+    } else {
+      this.currentTemp.textContent =
+        Math.round(apiResponse.forecast.forecastday[daynr].day.maxtemp_c) + "°";
+    }
+  }
+
+  get domFlex() {
+    return this.tempRow;
   }
 }
 
@@ -225,6 +245,24 @@ class TopNowCardRow {
   }
 }
 
+class WeatherDescriptionRow {
+  constructor(apiResponse) {
+    this.weatherDesriptionRow = document.createElement("div");
+    this.weatherDesriptionRow.id = "weather-description-row";
+    this.weatherDesriptionRow.textContent = apiResponse.current.condition.text;
+  }
+
+  updateDescription(daynr, apiResponse) {
+    if (daynr === 0) {
+      this.weatherDesriptionRow.textContent =
+        apiResponse.current.condition.text;
+    } else {
+      this.weatherDesriptionRow.textContent =
+        apiResponse.forecast.forecastday[daynr].day.condition.text;
+    }
+  }
+}
+
 function setUpNowCard(container, apiResponse) {
   let nowCard = document.createElement("div");
   nowCard.style.gridTemplateRows = "1fr 1fr 1fr 5fr";
@@ -232,14 +270,16 @@ function setUpNowCard(container, apiResponse) {
 
   let topRow = new TopNowCardRow();
   let cityRow = new CityRow(apiResponse);
+  let tempRow = new TemperatureRow(apiResponse);
+  let descRow = new WeatherDescriptionRow(apiResponse);
+
   nowCard.appendChild(topRow.domGrid);
   nowCard.appendChild(cityRow.domGrid);
+  nowCard.appendChild(tempRow.domFlex);
+  nowCard.appendChild(descRow.weatherDesriptionRow);
   container.appendChild(nowCard);
 
-  //test
-  cityRow.changeDate(0, apiResponse);
-  //
-  return { nowCard, topRow, cityRow };
+  return { topRow, cityRow, tempRow, descRow };
 }
 
 function setUpDetailCard(container, apiResponse) {
@@ -273,9 +313,13 @@ function getCurrentTemerature(locationId) {
     });
 }
 
-async function setUpWeatherPage(locationId) {
-  // some animation should be played during fetching in case of API long response
+function updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow) {
+  cityRow.changeDate(daynr, apiResponse);
+  tempRow.updateTemp(daynr, apiResponse);
+  descRow.updateDescription(daynr, apiResponse);
+}
 
+async function setUpWeatherPage(locationId) {
   const apiResponse = await getApiData(locationId);
 
   let container = document.querySelector("#container");
@@ -287,8 +331,33 @@ async function setUpWeatherPage(locationId) {
   infoGrid.id = "info-grid";
   container.appendChild(infoGrid);
 
-  let { nowCard, topRow, cityRow } = setUpNowCard(infoGrid, apiResponse); //if not in use nowCard object import to be removed
-  let { detailCard } = setUpDetailCard(infoGrid, apiResponse); //if not in use detailCard object import to be removed
+  let { topRow, cityRow, tempRow, descRow } = setUpNowCard(
+    infoGrid,
+    apiResponse
+  );
+  setUpDetailCard(infoGrid, apiResponse);
+
+  let daynr = 0;
+  let leftDaySwitch = document.querySelector("#temp-row-arrow-left");
+  let rightDaySwitch = document.querySelector("#temp-row-arrow-right");
+
+  leftDaySwitch.addEventListener("click", () => {
+    if (daynr > 0) {
+      daynr -= 1;
+      updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow);
+    } else {
+      return;
+    }
+  });
+
+  rightDaySwitch.addEventListener("click", () => {
+    if (daynr < 2) {
+      daynr += 1;
+      updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow);
+    } else {
+      return;
+    }
+  });
 }
 
 export { setUpWeatherPage };
