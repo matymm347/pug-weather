@@ -108,14 +108,37 @@ class BackButton {
 }
 
 class CityRow {
-  constructor() {
+  constructor(apiResponse) {
+    const monthAbbr = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const currentDay = new Date(apiResponse.location.localtime).getDate();
+    const currentMnth =
+      monthAbbr[new Date(apiResponse.location.localtime).getMonth()];
+
     this.container = document.createElement("div");
     this.container.id = "city-row-grid";
 
     this.location = document.createElement("div");
     this.location.className = "city-row-elements";
     this.location.id = "city-row-location";
-    this.location.textContent = "ltest";
+    this.location.textContent = "n/n";
+    this.updateLocation(
+      apiResponse.location.name,
+      apiResponse.location.country
+    );
 
     this.sunRise = document.createElement("div");
     this.sunRise.textContent = "srtest";
@@ -124,7 +147,8 @@ class CityRow {
     this.sunSet.textContent = "sstest";
 
     this.date = document.createElement("div");
-    this.date.textContent = "dtest";
+    this.date.textContent = "Today n/n";
+    this.updateDate(0, currentDay, currentMnth);
 
     this.container.appendChild(this.location);
     this.container.appendChild(this.sunRise);
@@ -148,8 +172,18 @@ class CityRow {
     this.sunSet.textContent = time;
   }
 
-  updateDate(date) {
-    this.date.textContent = date;
+  updateDate(daynr, apiDay, mnth) {
+    switch (daynr) {
+      case 0:
+        this.date.textContent = `Today ${apiDay} ${mnth}`;
+        break;
+      case 1:
+        this.date.textContent = `Tommorow ${apiDay} ${mnth}`;
+        break;
+      case 2 || 3:
+        this.date.textContent = `${apiDay} ${mnth}`;
+        break;
+    }
   }
 }
 
@@ -168,39 +202,48 @@ function getCurrentTemerature(locationId) {
     });
 }
 
-function setupTopNowCardGrid(container) {
-  let topNowCardGrid = document.createElement("div");
-  topNowCardGrid.id = "top-now-card-grid";
-  topNowCardGrid.style.gridTemplateColumns = "1fr 1fr 1fr";
-  topNowCardGrid.style.direction = "row";
+class TopNowCardRow {
+  constructor() {
+    this.container = document.createElement("div");
+    this.container.id = "top-now-card-grid";
+    this.container.style.gridTemplateColumns = "1fr 1fr 1fr";
+    this.container.style.direction = "row";
 
-  let backbutton = new BackButton();
-  let daySwitchMarker = new DaySwitchMarker();
-  let tempSwitch = new TempSwitch();
+    this.backbutton = new BackButton();
+    this.daySwitchMarker = new DaySwitchMarker();
+    this.tempSwitch = new TempSwitch();
 
-  topNowCardGrid.appendChild(backbutton.domGroup);
-  topNowCardGrid.appendChild(daySwitchMarker.domGrid);
-  topNowCardGrid.appendChild(tempSwitch.domGrid);
+    this.container.appendChild(this.backbutton.domGroup);
+    this.container.appendChild(this.daySwitchMarker.domGrid);
+    this.container.appendChild(this.tempSwitch.domGrid);
+  }
 
-  container.appendChild(topNowCardGrid);
+  get domGrid() {
+    return this.container;
+  }
 }
 
-function setUpNowCard(container) {
+function setUpNowCard(container, apiResponse) {
   let nowCard = document.createElement("div");
   nowCard.style.gridTemplateRows = "1fr 1fr 1fr 5fr";
   nowCard.id = "now-card";
 
-  setupTopNowCardGrid(nowCard);
-  let cityRow = new CityRow();
+  let topRow = new TopNowCardRow();
+  let cityRow = new CityRow(apiResponse);
+  nowCard.appendChild(topRow.domGrid);
   nowCard.appendChild(cityRow.domGrid);
   container.appendChild(nowCard);
+
+  return { nowCard, topRow, cityRow };
 }
 
-function setUpDetailCard(container) {
+function setUpDetailCard(container, apiResponse) {
   let detailCard = document.createElement("div");
   detailCard.id = "detail-card";
   detailCard.textContent = "detailCard";
   container.appendChild(detailCard);
+
+  return { detailCard };
 }
 
 async function getApiData(locationId) {
@@ -214,6 +257,7 @@ async function setUpWeatherPage(locationId) {
   // some animation should be played during fetching in case of API long response
 
   const apiResponse = await getApiData(locationId);
+  console.log(apiResponse);
 
   let container = document.querySelector("#container");
   while (container.firstChild) {
@@ -224,8 +268,8 @@ async function setUpWeatherPage(locationId) {
   infoGrid.id = "info-grid";
   container.appendChild(infoGrid);
 
-  setUpNowCard(infoGrid);
-  setUpDetailCard(infoGrid);
+  let { nowCard, topRow, cityRow } = setUpNowCard(infoGrid, apiResponse); //if not in use nowCard object import to be removed
+  let { detailCard } = setUpDetailCard(infoGrid, apiResponse); //if not in use detailCard object import to be removed
 }
 
 export { setUpWeatherPage };
