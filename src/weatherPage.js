@@ -61,11 +61,6 @@ class DaySwitchMarker {
     this.backgroundPositionElement2.className =
       "switch-background-element switch-element";
     this.switchContainer.appendChild(this.backgroundPositionElement2);
-    this.backgroundPositionElement3 = document.createElement("div");
-    this.backgroundPositionElement3.style.order = "5";
-    this.backgroundPositionElement3.className =
-      "switch-background-element switch-element";
-    this.switchContainer.appendChild(this.backgroundPositionElement3);
   }
 
   get domGrid() {
@@ -109,6 +104,40 @@ class BackButton {
 
 class CityRow {
   constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "city-row-grid";
+
+    this.location = document.createElement("div");
+    this.location.className = "city-row-elements";
+    this.location.id = "city-row-location";
+    this.updateLocation(
+      apiResponse.location.name,
+      apiResponse.location.country
+    );
+
+    this.sunRise = document.createElement("div");
+    this.sunRise.className = "city-row-elements";
+    this.sunRise.textContent = "srtest";
+
+    this.sunSet = document.createElement("div");
+    this.sunSet.className = "city-row-elements";
+    this.sunSet.textContent = "sstest";
+
+    this.date = document.createElement("div");
+    this.date.className = "city-row-elements";
+    this.changeDate(0, apiResponse);
+
+    this.container.appendChild(this.location);
+    this.container.appendChild(this.sunRise);
+    this.container.appendChild(this.date);
+    this.container.appendChild(this.sunSet);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+
+  changeDate(daynr, apiResponse) {
     const monthAbbr = [
       "Jan",
       "Feb",
@@ -124,40 +153,20 @@ class CityRow {
       "Dec",
     ];
 
-    const currentDay = new Date(apiResponse.location.localtime).getDate();
     const currentMnth =
-      monthAbbr[new Date(apiResponse.location.localtime).getMonth()];
+      monthAbbr[
+        new Date(apiResponse.forecast.forecastday[daynr].date).getMonth()
+      ];
 
-    this.container = document.createElement("div");
-    this.container.id = "city-row-grid";
-
-    this.location = document.createElement("div");
-    this.location.className = "city-row-elements";
-    this.location.id = "city-row-location";
-    this.location.textContent = "n/n";
-    this.updateLocation(
-      apiResponse.location.name,
-      apiResponse.location.country
-    );
-
-    this.sunRise = document.createElement("div");
-    this.sunRise.textContent = "srtest";
-
-    this.sunSet = document.createElement("div");
-    this.sunSet.textContent = "sstest";
-
-    this.date = document.createElement("div");
-    this.date.textContent = "Today n/n";
-    this.updateDate(0, currentDay, currentMnth);
-
-    this.container.appendChild(this.location);
-    this.container.appendChild(this.sunRise);
-    this.container.appendChild(this.date);
-    this.container.appendChild(this.sunSet);
-  }
-
-  get domGrid() {
-    return this.container;
+    if (daynr === 0) {
+      this.date.textContent = `Today ${new Date(
+        apiResponse.forecast.forecastday[0].date
+      ).getDate()} ${currentMnth}`;
+    } else {
+      this.date.textContent = `${new Date(
+        apiResponse.forecast.forecastday[daynr].date
+      ).getDate()} ${currentMnth}`;
+    }
   }
 
   updateLocation(city, country) {
@@ -171,35 +180,6 @@ class CityRow {
   updateSunSet(time) {
     this.sunSet.textContent = time;
   }
-
-  updateDate(daynr, apiDay, mnth) {
-    switch (daynr) {
-      case 0:
-        this.date.textContent = `Today ${apiDay} ${mnth}`;
-        break;
-      case 1:
-        this.date.textContent = `Tommorow ${apiDay} ${mnth}`;
-        break;
-      case 2 || 3:
-        this.date.textContent = `${apiDay} ${mnth}`;
-        break;
-    }
-  }
-}
-
-function getCurrentTemerature(locationId) {
-  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
-
-  fetch(apiUrl, { mode: "cors" })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (response) {
-      console.log(`Current temperature: ${response.current.temp_c}`);
-    })
-    .catch(function (err) {
-      // Error handling
-    });
 }
 
 class TopNowCardRow {
@@ -234,6 +214,9 @@ function setUpNowCard(container, apiResponse) {
   nowCard.appendChild(cityRow.domGrid);
   container.appendChild(nowCard);
 
+  //test
+  cityRow.changeDate(0, apiResponse);
+  //
   return { nowCard, topRow, cityRow };
 }
 
@@ -247,17 +230,31 @@ function setUpDetailCard(container, apiResponse) {
 }
 
 async function getApiData(locationId) {
-  let apiURL = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
+  let apiURL = `http://api.weatherapi.com/v1/forecast.json?key=***REMOVED***&q=id:${locationId}&days=3&aqi=no&alerts=no`;
   return await fetch(apiURL, { mode: "cors" }).then((response) =>
     response.json()
   );
+}
+
+function getCurrentTemerature(locationId) {
+  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=***REMOVED***&q=id:${locationId}&aqi=no`;
+
+  fetch(apiUrl, { mode: "cors" })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (response) {
+      console.log(`Current temperature: ${response.current.temp_c}`);
+    })
+    .catch(function (err) {
+      // Error handling
+    });
 }
 
 async function setUpWeatherPage(locationId) {
   // some animation should be played during fetching in case of API long response
 
   const apiResponse = await getApiData(locationId);
-  console.log(apiResponse);
 
   let container = document.querySelector("#container");
   while (container.firstChild) {
