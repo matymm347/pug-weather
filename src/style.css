@@ -199,9 +199,24 @@ p {
 
 #temp-row {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
+}
+
+.temp-row-arrow {
+  flex-grow: 1;
+  width: 18px;
+  height: 18px;
 }
 
 #current-temp {
+  color: white;
+  flex-grow: 1;
+  text-align: center;
+  font-size: 80px;
+}
+
+#weather-description-row {
+  text-align: center;
+  color: white;
 }
