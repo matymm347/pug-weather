@@ -196,3 +196,12 @@ p {
 
 #city-row-location {
 }
+
+#temp-row {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+#current-temp {
+}

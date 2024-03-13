@@ -1,5 +1,7 @@
 import { createHomeTitle } from "./homePage";
 import backIconSvg from "./graphics/back-svgrepo-com.svg";
+import leftIconSvg from "./graphics/left-svgrepo-com.svg";
+import rightIconSvg from "./graphics/right-svgrepo-com.svg";
 
 class TempSwitch {
   constructor() {
@@ -179,6 +181,26 @@ class CityRow {
 
   updateSunSet(time) {
     this.sunSet.textContent = time;
+  }
+}
+
+class temperatureRow {
+  constructor(apiResponse) {
+    this.tempRow = document.createElement("div");
+    this.tempRow.id = "temp-row";
+
+    this.currentTemp = document.createElement("div");
+    this.currentTemp.id = "current-temp";
+
+    this.leftArrow = document.createElement("img");
+    this.leftArrow.src = leftIconSvg;
+
+    this.rightArrow = document.createElement("img");
+    this.rightArrow.src = rightIconSvg;
+
+    this.tempRow.appendChild(this.leftArrow);
+    this.tempRow.appendChild(this.currentTemp);
+    this.tempRow.appendChild(this.rightArrow);
   }
 }
 
