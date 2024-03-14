@@ -2,6 +2,9 @@ import { createHomeTitle } from "./homePage";
 import backIconSvg from "./graphics/back-svgrepo-com.svg";
 import leftIconSvg from "./graphics/left-svgrepo-com.svg";
 import rightIconSvg from "./graphics/right-svgrepo-com.svg";
+import sunSetSvg from "./graphics/weather-icons-34-svgrepo-com.svg";
+import sunRiseSvg from "./graphics/weather-icons-35-svgrepo-com.svg";
+import locationSvg from "./graphics/location-svgrepo-com.svg";
 
 class TempSwitch {
   constructor() {
@@ -69,8 +72,8 @@ class DaySwitchMarker {
     return this.switchContainer;
   }
 
-  switchDay(currentDay) {
-    switch (currentDay) {
+  switchDay(daynr) {
+    switch (daynr) {
       case 0:
         this.currentPositionElement.style.order = 0;
         break;
@@ -104,6 +107,27 @@ class BackButton {
   }
 }
 
+class TopNowCardRow {
+  constructor() {
+    this.container = document.createElement("div");
+    this.container.id = "top-now-card-grid";
+    this.container.style.gridTemplateColumns = "1fr 1fr 1fr";
+    this.container.style.direction = "row";
+
+    this.backbutton = new BackButton();
+    this.daySwitchMarker = new DaySwitchMarker();
+    this.tempSwitch = new TempSwitch();
+
+    this.container.appendChild(this.backbutton.domGroup);
+    this.container.appendChild(this.daySwitchMarker.domGrid);
+    this.container.appendChild(this.tempSwitch.domGrid);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
 class CityRow {
   constructor(apiResponse) {
     this.container = document.createElement("div");
@@ -112,18 +136,38 @@ class CityRow {
     this.location = document.createElement("div");
     this.location.className = "city-row-elements";
     this.location.id = "city-row-location";
+    this.locationIcon = document.createElement("img");
+    this.locationIcon.id = "location-icon";
+    this.locationIcon.src = locationSvg;
+    this.cityName = document.createElement("div");
     this.updateLocation(
       apiResponse.location.name,
       apiResponse.location.country
     );
+    this.location.appendChild(this.locationIcon);
+    this.location.appendChild(this.cityName);
 
     this.sunRise = document.createElement("div");
-    this.sunRise.className = "city-row-elements";
-    this.sunRise.textContent = "srtest";
+    this.sunRise.className = "city-row-elements sun-set-rise-elements";
+    this.sunRiseHour = document.createElement("div");
+    this.sunRiseHour.textContent = "n/n";
+    this.updateSunRiseHour(0, apiResponse);
+    this.sunRiseIcon = document.createElement("img");
+    this.sunRiseIcon.src = sunRiseSvg;
+    this.sunRiseIcon.className = "sun-rise-set-icon";
+    this.sunRise.appendChild(this.sunRiseHour);
+    this.sunRise.appendChild(this.sunRiseIcon);
 
     this.sunSet = document.createElement("div");
-    this.sunSet.className = "city-row-elements";
-    this.sunSet.textContent = "sstest";
+    this.sunSet.className = "city-row-elements sun-set-rise-elements";
+    this.sunSetHour = document.createElement("div");
+    this.sunSetHour.textContent = "n/n";
+    this.updateSunSetHour(0, apiResponse);
+    this.sunSetIcon = document.createElement("img");
+    this.sunSetIcon.src = sunSetSvg;
+    this.sunSetIcon.className = "sun-rise-set-icon";
+    this.sunSet.appendChild(this.sunSetHour);
+    this.sunSet.appendChild(this.sunSetIcon);
 
     this.date = document.createElement("div");
     this.date.className = "city-row-elements";
@@ -172,15 +216,17 @@ class CityRow {
   }
 
   updateLocation(city, country) {
-    this.location.textContent = city + ", " + country;
+    this.cityName.textContent = city + ", " + country;
   }
 
-  updateSunRise(time) {
-    this.sunRise.textContent = time;
+  updateSunRiseHour(daynr, apiResponse) {
+    this.sunRiseHour.textContent =
+      apiResponse.forecast.forecastday[daynr].astro.sunrise;
   }
 
-  updateSunSet(time) {
-    this.sunSet.textContent = time;
+  updateSunSetHour(daynr, apiResponse) {
+    this.sunSetHour.textContent =
+      apiResponse.forecast.forecastday[daynr].astro.sunset;
   }
 }
 
@@ -221,27 +267,6 @@ class TemperatureRow {
 
   get domFlex() {
     return this.tempRow;
-  }
-}
-
-class TopNowCardRow {
-  constructor() {
-    this.container = document.createElement("div");
-    this.container.id = "top-now-card-grid";
-    this.container.style.gridTemplateColumns = "1fr 1fr 1fr";
-    this.container.style.direction = "row";
-
-    this.backbutton = new BackButton();
-    this.daySwitchMarker = new DaySwitchMarker();
-    this.tempSwitch = new TempSwitch();
-
-    this.container.appendChild(this.backbutton.domGroup);
-    this.container.appendChild(this.daySwitchMarker.domGrid);
-    this.container.appendChild(this.tempSwitch.domGrid);
-  }
-
-  get domGrid() {
-    return this.container;
   }
 }
 
@@ -313,8 +338,18 @@ function getCurrentTemerature(locationId) {
     });
 }
 
-function updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow) {
+function updateWeatherPage(
+  daynr,
+  apiResponse,
+  topRow,
+  cityRow,
+  tempRow,
+  descRow
+) {
+  topRow.daySwitchMarker.switchDay(daynr);
   cityRow.changeDate(daynr, apiResponse);
+  cityRow.updateSunRiseHour(daynr, apiResponse);
+  cityRow.updateSunSetHour(daynr, apiResponse);
   tempRow.updateTemp(daynr, apiResponse);
   descRow.updateDescription(daynr, apiResponse);
 }
@@ -344,7 +379,7 @@ async function setUpWeatherPage(locationId) {
   leftDaySwitch.addEventListener("click", () => {
     if (daynr > 0) {
       daynr -= 1;
-      updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow);
+      updateWeatherPage(daynr, apiResponse, topRow, cityRow, tempRow, descRow);
     } else {
       return;
     }
@@ -353,7 +388,7 @@ async function setUpWeatherPage(locationId) {
   rightDaySwitch.addEventListener("click", () => {
     if (daynr < 2) {
       daynr += 1;
-      updateWeatherPage(daynr, apiResponse, cityRow, tempRow, descRow);
+      updateWeatherPage(daynr, apiResponse, topRow, cityRow, tempRow, descRow);
     } else {
       return;
     }
