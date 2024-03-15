@@ -241,8 +241,9 @@ class TemperatureRow {
     this.currentTemp.id = "current-temp";
     this.currentTemp.textContent = startingTemp + "°";
 
-    this.leftArrow = document.createElement("img");
-    this.leftArrow.src = leftIconSvg;
+    // this.leftArrow = document.createElement("img");
+    // this.leftArrow.src = leftIconSvg;
+    this.leftArrow = document.createElement("div");
     this.leftArrow.className = "temp-row-arrow";
     this.leftArrow.id = "temp-row-arrow-left";
 
@@ -254,6 +255,12 @@ class TemperatureRow {
     this.tempRow.appendChild(this.leftArrow);
     this.tempRow.appendChild(this.currentTemp);
     this.tempRow.appendChild(this.rightArrow);
+  }
+
+  async setUpArrows() {
+    await fetch("./graphics/left-svgrepo-com.svg").then((svgContent) => {
+      this.leftArrow.innerHTML = svgContent;
+    });
   }
 
   updateTemp(daynr, apiResponse) {
