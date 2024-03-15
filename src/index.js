@@ -2,5 +2,5 @@ import "./style.css";
 import { setUpHomePage } from "./homePage";
 import { setUpWeatherPage } from "./weatherPage";
 
-// setUpHomePage();
+//setUpHomePage();
 setUpWeatherPage("1991652");

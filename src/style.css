@@ -103,7 +103,8 @@ p {
 }
 
 #now-card {
-  border: solid 1px gray;
+  overflow: hidden;
+  position: relative;
 }
 
 #back-button-area {
@@ -131,6 +132,7 @@ p {
 #switch-container {
   display: flex;
   align-items: center;
+  gap: 3px;
 }
 
 #current-position-element {
@@ -186,10 +188,11 @@ p {
 #city-row-grid {
   display: grid;
   align-items: center;
-  justify-items: center;
+  justify-items: flex-start;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   margin-bottom: 40px;
+  margin-left: 20px;
 }
 
 .city-row-elements {
@@ -204,26 +207,38 @@ p {
 #temp-row {
   display: flex;
   justify-content: center;
+  align-items: stretch;
+}
+
+.temp-button {
+  flex-grow: 1;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.temp-button:hover {
+  background-color: white;
+}
+
+.temp-button:hover .temp-row-arrow {
+  color: #5c9ce5;
 }
 
 .temp-row-arrow {
-  flex-grow: 1;
   width: 18px;
   height: 18px;
-  color: white;
+  color: #9dc3ef;
+  transition: color 0.3s ease;
 }
 
 #current-temp {
   color: white;
-  flex-grow: 1;
   text-align: center;
   font-size: 80px;
-}
-
-#weather-description-row {
-  text-align: center;
-  color: white;
 }
 
 .sun-set-rise-elements {
@@ -240,4 +255,44 @@ p {
   width: 10px;
   margin-right: 5px;
   margin-top: 4px;
+}
+
+#weather-desc-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+#pug-svg-element {
+  position: absolute;
+  width: 600px;
+  bottom: -200px;
+  left: -100px;
+}
+
+#now-card-pug-container {
+  width: 100%;
+  height: 100%;
+}
+
+#detail-card {
+  display: grid;
+  grid-template-rows: 1fr 3fr 4fr;
+  background-color: #e4f1ff;
+}
+
+#welcome-banner {
+  display: flex;
+  flex-direction: column;
+  margin-left: 60px;
+  margin-top: 30px;
+}
+
+#upcoming-hours-container {
+  display: grid;
+  margin: 30px;
+  background-color: white;
+  border-radius: 40px;
 }
