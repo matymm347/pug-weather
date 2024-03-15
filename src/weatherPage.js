@@ -241,19 +241,31 @@ class TemperatureRow {
     this.currentTemp.id = "current-temp";
     this.currentTemp.textContent = startingTemp + "°";
 
-    this.leftArrow = document.createElement("img");
-    this.leftArrow.src = leftIconSvg;
+    this.leftArrow = document.createElement("div");
     this.leftArrow.className = "temp-row-arrow";
     this.leftArrow.id = "temp-row-arrow-left";
 
-    this.rightArrow = document.createElement("img");
-    this.rightArrow.src = rightIconSvg;
+    this.rightArrow = document.createElement("div");
     this.rightArrow.className = "temp-row-arrow";
     this.rightArrow.id = "temp-row-arrow-right";
 
     this.tempRow.appendChild(this.leftArrow);
     this.tempRow.appendChild(this.currentTemp);
     this.tempRow.appendChild(this.rightArrow);
+  }
+
+  async setUpArrows() {
+    await fetch(leftIconSvg)
+      .then((response) => response.text())
+      .then((svgText) => {
+        this.leftArrow.innerHTML = svgText;
+      });
+
+    await fetch(rightIconSvg)
+      .then((response) => response.text())
+      .then((svgText) => {
+        this.rightArrow.innerHTML = svgText;
+      });
   }
 
   updateTemp(daynr, apiResponse) {
@@ -282,13 +294,14 @@ class WeatherDescriptionRow {
       this.weatherDesriptionRow.textContent =
         apiResponse.current.condition.text;
     } else {
-      this.weatherDesriptionRow.textContent =
-        apiResponse.forecast.forecastday[daynr].day.condition.text;
+      let response = apiResponse.forecast.forecastday[daynr].day.condition.text;
+      response = response.replace(/\bnearby\b/g, ""); // remove "nearby" word
+      this.weatherDesriptionRow.textContent = response;
     }
   }
 }
 
-function setUpNowCard(container, apiResponse) {
+async function setUpNowCard(container, apiResponse) {
   let nowCard = document.createElement("div");
   nowCard.style.gridTemplateRows = "1fr 1fr 1fr 5fr";
   nowCard.id = "now-card";
@@ -296,6 +309,7 @@ function setUpNowCard(container, apiResponse) {
   let topRow = new TopNowCardRow();
   let cityRow = new CityRow(apiResponse);
   let tempRow = new TemperatureRow(apiResponse);
+  await tempRow.setUpArrows();
   let descRow = new WeatherDescriptionRow(apiResponse);
 
   nowCard.appendChild(topRow.domGrid);
@@ -366,7 +380,7 @@ async function setUpWeatherPage(locationId) {
   infoGrid.id = "info-grid";
   container.appendChild(infoGrid);
 
-  let { topRow, cityRow, tempRow, descRow } = setUpNowCard(
+  let { topRow, cityRow, tempRow, descRow } = await setUpNowCard(
     infoGrid,
     apiResponse
   );
