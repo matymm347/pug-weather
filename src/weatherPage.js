@@ -1,10 +1,12 @@
-import { createHomeTitle } from "./homePage";
+import { setUpHomePage } from "./homePage";
+import Chart from "chart.js/auto";
 import backIconSvg from "./graphics/back-svgrepo-com.svg";
 import leftIconSvg from "./graphics/left-svgrepo-com.svg";
 import rightIconSvg from "./graphics/right-svgrepo-com.svg";
 import sunSetSvg from "./graphics/weather-icons-34-svgrepo-com.svg";
 import sunRiseSvg from "./graphics/weather-icons-35-svgrepo-com.svg";
 import locationSvg from "./graphics/location-svgrepo-com.svg";
+import pugSVG from "./graphics/pug-svgrepo-com.svg";
 
 class TempSwitch {
   constructor() {
@@ -100,6 +102,8 @@ class BackButton {
     this.backButton.id = "back-button";
     this.backButton.alt = "back";
     this.backButtonArea.appendChild(this.backButton);
+
+    this.backButtonArea.addEventListener("click", () => setUpHomePage());
   }
 
   get domGroup() {
@@ -140,6 +144,8 @@ class CityRow {
     this.locationIcon.id = "location-icon";
     this.locationIcon.src = locationSvg;
     this.cityName = document.createElement("div");
+    this.cityName.style.fontWeight = "bold";
+    this.cityName.style.fontSize = "18px";
     this.updateLocation(
       apiResponse.location.name,
       apiResponse.location.country
@@ -232,26 +238,30 @@ class CityRow {
 
 class TemperatureRow {
   constructor(apiResponse) {
-    let startingTemp = apiResponse.current.temp_c;
-
     this.tempRow = document.createElement("div");
     this.tempRow.id = "temp-row";
 
     this.currentTemp = document.createElement("div");
     this.currentTemp.id = "current-temp";
-    this.currentTemp.textContent = startingTemp + "°";
+    this.updateTemp(0, apiResponse);
 
+    this.leftButton = document.createElement("div");
+    this.leftButton.className = "temp-button";
+    this.leftButton.id = "temp-row-button-left";
     this.leftArrow = document.createElement("div");
     this.leftArrow.className = "temp-row-arrow";
-    this.leftArrow.id = "temp-row-arrow-left";
+    this.leftButton.appendChild(this.leftArrow);
 
+    this.rightButton = document.createElement("div");
+    this.rightButton.className = "temp-button";
+    this.rightButton.id = "temp-row-button-right";
     this.rightArrow = document.createElement("div");
     this.rightArrow.className = "temp-row-arrow";
-    this.rightArrow.id = "temp-row-arrow-right";
+    this.rightButton.appendChild(this.rightArrow);
 
-    this.tempRow.appendChild(this.leftArrow);
+    this.tempRow.appendChild(this.leftButton);
     this.tempRow.appendChild(this.currentTemp);
-    this.tempRow.appendChild(this.rightArrow);
+    this.tempRow.appendChild(this.rightButton);
   }
 
   async setUpArrows() {
@@ -270,7 +280,8 @@ class TemperatureRow {
 
   updateTemp(daynr, apiResponse) {
     if (daynr === 0) {
-      this.currentTemp.textContent = apiResponse.current.temp_c + "°";
+      this.currentTemp.textContent =
+        Math.round(apiResponse.current.temp_c) + "°";
     } else {
       this.currentTemp.textContent =
         Math.round(apiResponse.forecast.forecastday[daynr].day.maxtemp_c) + "°";
@@ -284,26 +295,57 @@ class TemperatureRow {
 
 class WeatherDescriptionRow {
   constructor(apiResponse) {
-    this.weatherDesriptionRow = document.createElement("div");
-    this.weatherDesriptionRow.id = "weather-description-row";
-    this.weatherDesriptionRow.textContent = apiResponse.current.condition.text;
+    this.weatherDescDiv = document.createElement("div");
+    this.weatherDescDiv.id = "weather-desc-div";
+
+    this.weatherIcon = document.createElement("img");
+    this.weatherIcon.src = apiResponse.current.condition.icon;
+
+    this.weatherDescText = document.createElement("a");
+    this.weatherDescText.id = "weather-description-row";
+    this.weatherDescText.textContent = apiResponse.current.condition.text;
+
+    this.weatherDescDiv.appendChild(this.weatherIcon);
+    this.weatherDescDiv.appendChild(this.weatherDescText);
   }
 
   updateDescription(daynr, apiResponse) {
     if (daynr === 0) {
-      this.weatherDesriptionRow.textContent =
-        apiResponse.current.condition.text;
+      this.weatherIcon.src = apiResponse.current.condition.icon;
+      this.weatherDescText.textContent = apiResponse.current.condition.text;
     } else {
+      this.weatherIcon.src =
+        apiResponse.forecast.forecastday[daynr].day.condition.icon;
       let response = apiResponse.forecast.forecastday[daynr].day.condition.text;
       response = response.replace(/\bnearby\b/g, ""); // remove "nearby" word
-      this.weatherDesriptionRow.textContent = response;
+      this.weatherDescText.textContent = response;
     }
   }
 }
 
-async function setUpNowCard(container, apiResponse) {
+class UpcomingHoursChart {
+  constructor(apiResponse) {
+    this.upcomingHoursGrid = document.createElement("div");
+    this.upcomingHoursGrid.textContent = "upcoming hours";
+    this.upcomingHoursGrid.id = "upcoming-hours-container";
+  }
+}
+
+function setUpPugSVG() {
+  let pugContainer = document.createElement("div");
+  pugContainer.style.overflow = "hidden";
+  pugContainer.id = "now-card-pug-container";
+  let pugSvgElement = document.createElement("img");
+  pugSvgElement.src = pugSVG;
+  pugSvgElement.id = "pug-svg-element";
+
+  pugContainer.appendChild(pugSvgElement);
+  return pugContainer;
+}
+
+async function setUpNowCard(infoGrid, apiResponse) {
   let nowCard = document.createElement("div");
-  nowCard.style.gridTemplateRows = "1fr 1fr 1fr 5fr";
+  nowCard.style.gridTemplateRows = "1fr 1fr 1fr 4fr 1fr";
   nowCard.id = "now-card";
 
   let topRow = new TopNowCardRow();
@@ -311,23 +353,43 @@ async function setUpNowCard(container, apiResponse) {
   let tempRow = new TemperatureRow(apiResponse);
   await tempRow.setUpArrows();
   let descRow = new WeatherDescriptionRow(apiResponse);
+  let pugSvgElement = setUpPugSVG();
 
   nowCard.appendChild(topRow.domGrid);
   nowCard.appendChild(cityRow.domGrid);
   nowCard.appendChild(tempRow.domFlex);
-  nowCard.appendChild(descRow.weatherDesriptionRow);
-  container.appendChild(nowCard);
+  nowCard.appendChild(descRow.weatherDescDiv);
+  nowCard.appendChild(pugSvgElement);
+  infoGrid.appendChild(nowCard);
 
   return { topRow, cityRow, tempRow, descRow };
 }
 
-function setUpDetailCard(container, apiResponse) {
+function setUpWelcomeBanner() {
+  let welcomeBanner = document.createElement("div");
+  welcomeBanner.id = "welcome-banner";
+
+  let welcomeText = document.createElement("div");
+  welcomeText.style.fontSize = "20px";
+  welcomeText.style.fontWeight = "bold";
+  welcomeText.textContent = "Welcome!";
+  let additionalText = document.createElement("div");
+  additionalText.textContent = "Check out today's weather information";
+  welcomeBanner.appendChild(welcomeText);
+  welcomeBanner.appendChild(additionalText);
+
+  return welcomeBanner;
+}
+
+async function setUpDetailCard(infoGrid, apiResponse) {
   let detailCard = document.createElement("div");
   detailCard.id = "detail-card";
-  detailCard.textContent = "detailCard";
-  container.appendChild(detailCard);
+  detailCard.appendChild(setUpWelcomeBanner());
 
-  return { detailCard };
+  let upcomingHours = new UpcomingHoursChart(apiResponse);
+  detailCard.appendChild(upcomingHours.upcomingHoursGrid);
+
+  infoGrid.appendChild(detailCard);
 }
 
 async function getApiData(locationId) {
@@ -387,8 +449,8 @@ async function setUpWeatherPage(locationId) {
   setUpDetailCard(infoGrid, apiResponse);
 
   let daynr = 0;
-  let leftDaySwitch = document.querySelector("#temp-row-arrow-left");
-  let rightDaySwitch = document.querySelector("#temp-row-arrow-right");
+  let leftDaySwitch = document.querySelector("#temp-row-button-left");
+  let rightDaySwitch = document.querySelector("#temp-row-button-right");
 
   leftDaySwitch.addEventListener("click", () => {
     if (daynr > 0) {

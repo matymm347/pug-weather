@@ -151,6 +151,10 @@ function setUpSearchArea(container) {
 
 function setUpHomePage() {
   let container = document.querySelector("#container");
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
   let homeTitle = createHomeTitle(container);
   let searchArea = setUpSearchArea(container);
 }
