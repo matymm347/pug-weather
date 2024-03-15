@@ -211,6 +211,7 @@ p {
   flex-grow: 1;
   width: 18px;
   height: 18px;
+  color: white;
 }
 
 #current-temp {
