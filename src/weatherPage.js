@@ -326,8 +326,93 @@ class WeatherDescriptionRow {
 class UpcomingHoursChart {
   constructor(apiResponse) {
     this.upcomingHoursGrid = document.createElement("div");
-    this.upcomingHoursGrid.textContent = "upcoming hours";
     this.upcomingHoursGrid.id = "upcoming-hours-container";
+
+    this.chart = document.createElement("canvas");
+    this.chart.id = "upcoming-hours-chart";
+    this.upcomingHoursGrid.appendChild(this.chart);
+
+    let localTime = new Date(apiResponse.location.localtime).getHours();
+    let labelsList = [];
+
+    for (let index = 0; index < 8; index++) {
+      if (index === 0) {
+        labelsList.push(this.fetchLabelData(apiResponse, 0, localTime));
+        labelsList[0].time = "Now";
+        continue;
+      }
+
+      let calcTime = "";
+
+      if (localTime + index > 23) {
+        if (localTime + index - 24 == 0) {
+          labelsList.push(this.fetchLabelData(apiResponse, 1, 0));
+          labelsList[index].time = "00:00";
+        } else {
+          calcTime = localTime + index - 24;
+          labelsList.push(this.fetchLabelData(apiResponse, 1, calcTime));
+          labelsList[index].time = `0${localTime + index - 24}:00`;
+        }
+      } else {
+        calcTime = localTime + index;
+        labelsList.push(this.fetchLabelData(apiResponse, 0, calcTime));
+        labelsList[index].time = localTime + index + ":00";
+      }
+    }
+
+    this.drawChart = async function () {
+      const data = [
+        { year: 2010, count: 10 },
+        { year: 2011, count: 20 },
+        { year: 2012, count: 15 },
+        { year: 2013, count: 25 },
+        { year: 2014, count: 22 },
+        { year: 2015, count: 30 },
+        { year: 2016, count: 28 },
+      ];
+
+      new Chart(document.getElementById("upcoming-hours-chart"), {
+        type: "bar",
+        options: {
+          scales: {
+            x: {
+              position: "top",
+            },
+          },
+          plugins: {
+            tooltip: {
+              enabled: false,
+            },
+            legend: {
+              display: false,
+            },
+          },
+        },
+        data: {
+          labels: labelsList.map((row) => row.time),
+          datasets: [
+            {
+              data: labelsList.map((row) => row.temp),
+            },
+          ],
+        },
+      });
+    };
+  }
+
+  fetchLabelData(apiResponse, day, specificHour) {
+    let icon =
+      apiResponse.forecast.forecastday[day].hour[specificHour].condition.icon;
+    let temp = Math.round(
+      apiResponse.forecast.forecastday[day].hour[specificHour].temp_c
+    );
+    if (temp == -0) {
+      temp = 0;
+    }
+    let precip =
+      apiResponse.forecast.forecastday[day].hour[specificHour].precip_mm;
+
+    return { time: specificHour, icon, temp, precip };
   }
 }
 
@@ -390,6 +475,7 @@ async function setUpDetailCard(infoGrid, apiResponse) {
   detailCard.appendChild(upcomingHours.upcomingHoursGrid);
 
   infoGrid.appendChild(detailCard);
+  await upcomingHours.drawChart();
 }
 
 async function getApiData(locationId) {
