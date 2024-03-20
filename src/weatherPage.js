@@ -372,11 +372,32 @@ class UpcomingHoursChart {
       ];
 
       new Chart(document.getElementById("upcoming-hours-chart"), {
-        type: "bar",
+        type: "line",
         options: {
+          maintainAspectRatio: false,
           scales: {
             x: {
               position: "top",
+              border: {
+                display: false,
+              },
+              grid: {
+                lineWidth: 1,
+                color: "rgb(0, 0, 0)",
+                z: 1,
+              },
+              // ticks: {
+              //   callback: function (value, index, ticks) {
+              //     return labelsList[0].icon;
+              //   },
+              // },
+            },
+            y: {
+              min: -5,
+              display: false,
+              grid: {
+                display: false,
+              },
             },
           },
           plugins: {
@@ -392,7 +413,13 @@ class UpcomingHoursChart {
           labels: labelsList.map((row) => row.time),
           datasets: [
             {
-              data: labelsList.map((row) => row.temp),
+              data: labelsList.map((row) => row.precip),
+              pointRadius: 0,
+              showLine: false,
+              fill: {
+                target: "origin",
+                above: "rgb(92, 156, 229)",
+              },
             },
           ],
         },
@@ -410,7 +437,7 @@ class UpcomingHoursChart {
       temp = 0;
     }
     let precip =
-      apiResponse.forecast.forecastday[day].hour[specificHour].precip_mm;
+      apiResponse.forecast.forecastday[day].hour[specificHour].chance_of_rain;
 
     return { time: specificHour, icon, temp, precip };
   }
@@ -479,14 +506,14 @@ async function setUpDetailCard(infoGrid, apiResponse) {
 }
 
 async function getApiData(locationId) {
-  let apiURL = `http://api.weatherapi.com/v1/forecast.json?key=a5e4fed568014feea07121139242401&q=id:${locationId}&days=3&aqi=no&alerts=no`;
+  let apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API_KEY}&q=id:${locationId}&days=3&aqi=no&alerts=no`;
   return await fetch(apiURL, { mode: "cors" }).then((response) =>
     response.json()
   );
 }
 
 function getCurrentTemerature(locationId) {
-  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=a5e4fed568014feea07121139242401&q=id:${locationId}&aqi=no`;
+  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=id:${locationId}&aqi=no`;
 
   fetch(apiUrl, { mode: "cors" })
     .then(function (response) {
@@ -517,6 +544,7 @@ function updateWeatherPage(
 }
 
 async function setUpWeatherPage(locationId) {
+  console.log(locationId);
   const apiResponse = await getApiData(locationId);
 
   let container = document.querySelector("#container");
