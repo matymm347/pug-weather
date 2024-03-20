@@ -361,20 +361,35 @@ class UpcomingHoursChart {
     }
 
     this.drawChart = async function () {
-      const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-      ];
+      Chart.register({
+        id: "customImageTicks",
+        beforeDraw: function (chart, args, options) {
+          const { ctx, chartArea } = chart;
+
+          // Draw ticks with images
+          labelsList.forEach((label, index) => {
+            const x = chart.scales.x.getPixelForValue(label.time);
+            const y = chartArea.top - 70; // Adjust as needed
+            const imgSize = 40;
+
+            const img = new Image(imgSize, imgSize);
+            img.src = labelsList[index].icon;
+            img.onload = function () {
+              ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
+            };
+          });
+        },
+      });
 
       new Chart(document.getElementById("upcoming-hours-chart"), {
         type: "line",
         options: {
           maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 40,
+            },
+          },
           scales: {
             x: {
               position: "top",
@@ -388,7 +403,7 @@ class UpcomingHoursChart {
               },
               // ticks: {
               //   callback: function (value, index, ticks) {
-              //     return labelsList[0].icon;
+              //     return `<img src="${labelsList[0].icon}" alt="Tick Image">`;
               //   },
               // },
             },
@@ -407,6 +422,7 @@ class UpcomingHoursChart {
             legend: {
               display: false,
             },
+            customImageTicks: true,
           },
         },
         data: {
