@@ -3,7 +3,7 @@ import { setUpWeatherPage } from "./weatherPage";
 
 async function fillSearchHints(searchArea, userInput) {
   userInput = replacePolishChars(userInput);
-  let apiSearchURLBase = `http://api.weatherapi.com/v1/search.json?key=***REMOVED***&q=${userInput}&lang=pl`;
+  let apiSearchURLBase = `http://api.weatherapi.com/v1/search.json?key=${process.env.WEATHER_API_KEY}&q=${userInput}&lang=pl`;
 
   const cityList = await fetch(apiSearchURLBase, { mode: "cors" }).then(
     (response) => response.json()
