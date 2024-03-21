@@ -360,10 +360,31 @@ class UpcomingHoursChart {
       }
     }
 
-    this.drawChart = async function () {
-      Chart.register({
-        id: "customImageTicks",
-        beforeDraw: function (chart, args, options) {
+    this.drawChart = function () {
+      // Chart.register({
+      //   id: "customImageTicks",
+      //   beforeDraw: function (chart, args, options) {
+      //     const { ctx, chartArea } = chart;
+
+      //     // Draw ticks with images
+      //     labelsList.forEach((label, index) => {
+      //       const x = chart.scales.x.getPixelForValue(label.time);
+      //       const y = chartArea.top - 70; // Adjust as needed
+      //       const imgSize = 40;
+
+      //       const img = new Image(imgSize, imgSize);
+      //       img.src = labelsList[index].icon;
+      //       console.log("Index is: " + index);
+      //       img.onload = function () {
+      //         ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
+      //       };
+      //     });
+      //   },
+      // });
+
+      let iconPlugin = {
+        id: "iconPlugin",
+        beforeDraw: function (chart) {
           const { ctx, chartArea } = chart;
 
           // Draw ticks with images
@@ -374,17 +395,35 @@ class UpcomingHoursChart {
 
             const img = new Image(imgSize, imgSize);
             img.src = labelsList[index].icon;
-            console.log("Index is: " + index);
             img.onload = function () {
               ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
             };
           });
         },
-      });
+      };
+
+      // Make multiline tick with time and precipation to implement for Chart.JS
+      let multilineTickList = [];
+      for (let index = 0; index < labelsList.length; index++) {
+        multilineTickList.push([
+          labelsList[index].time,
+          labelsList[index].precip + "%",
+        ]);
+      }
 
       new Chart(document.getElementById("upcoming-hours-chart"), {
+        plugins: [iconPlugin],
         type: "line",
         options: {
+          plugins: {
+            tooltip: {
+              enabled: false,
+            },
+            legend: {
+              display: false,
+            },
+            customImageTicks: true,
+          },
           maintainAspectRatio: false,
           layout: {
             padding: {
@@ -404,8 +443,11 @@ class UpcomingHoursChart {
               },
               // ticks: {
               //   callback: function (value, index, ticks) {
-              //     return `<img src="${labelsList[0].icon}" alt="Tick Image">`;
+              //     let time = labelsList[index].time;
+              //     let precip = labelsList[index].precip + "%";
+              //     return [time, precip];
               //   },
+              //   autoskip: false,
               // },
             },
             y: {
@@ -416,18 +458,9 @@ class UpcomingHoursChart {
               },
             },
           },
-          plugins: {
-            tooltip: {
-              enabled: false,
-            },
-            legend: {
-              display: false,
-            },
-            customImageTicks: true,
-          },
         },
         data: {
-          labels: labelsList.map((row) => row.time),
+          labels: multilineTickList,
           datasets: [
             {
               data: labelsList.map((row) => row.precip),
@@ -561,7 +594,6 @@ function updateWeatherPage(
 }
 
 async function setUpWeatherPage(locationId) {
-  console.log(locationId);
   const apiResponse = await getApiData(locationId);
 
   let container = document.querySelector("#container");
