@@ -374,6 +374,7 @@ class UpcomingHoursChart {
 
             const img = new Image(imgSize, imgSize);
             img.src = labelsList[index].icon;
+            console.log("Index is: " + index);
             img.onload = function () {
               ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
             };
