@@ -16,10 +16,6 @@
   },
   "dependencies": {
     "chart.js": "^4.4.2",
-    "crypto-browserify": "^3.12.0",
-    "node-polyfill-webpack-plugin": "^3.0.0",
-    "pretier": "^0.0.1",
-    "process": "^0.11.10",
-    "uninstall": "^0.0.0"
+    "pretier": "^0.0.1"
   }
 }
