@@ -325,12 +325,12 @@ class WeatherDescriptionRow {
 
 class UpcomingHoursChart {
   constructor(apiResponse) {
-    this.upcomingHoursGrid = document.createElement("div");
-    this.upcomingHoursGrid.id = "upcoming-hours-container";
+    this.upcomingHoursContainer = document.createElement("div");
+    this.upcomingHoursContainer.id = "upcoming-hours-container";
 
     this.chart = document.createElement("canvas");
     this.chart.id = "upcoming-hours-chart";
-    this.upcomingHoursGrid.appendChild(this.chart);
+    this.upcomingHoursContainer.appendChild(this.chart);
 
     let localTime = new Date(apiResponse.location.localtime).getHours();
     let labelsList = [];
@@ -389,8 +389,8 @@ class UpcomingHoursChart {
 
           // Draw ticks with images
           labelsList.forEach((label, index) => {
-            const x = chart.scales.x.getPixelForValue(label.time);
-            const y = chartArea.top - 70; // Adjust as needed
+            const x = chart.scales.x.getPixelForValue(index);
+            const y = chartArea.top - 85; // Adjust as needed
             const imgSize = 40;
 
             const img = new Image(imgSize, imgSize);
@@ -415,6 +415,9 @@ class UpcomingHoursChart {
         plugins: [iconPlugin],
         type: "line",
         options: {
+          // 17ms delay to prevent dynamic resize draw tick png bug
+          resizeDelay: 17,
+          animation: false,
           plugins: {
             tooltip: {
               enabled: false,
@@ -461,6 +464,7 @@ class UpcomingHoursChart {
         },
         data: {
           labels: multilineTickList,
+          //labels: labelsList.map((row) => row.time),
           datasets: [
             {
               data: labelsList.map((row) => row.precip),
@@ -549,7 +553,7 @@ async function setUpDetailCard(infoGrid, apiResponse) {
   detailCard.appendChild(setUpWelcomeBanner());
 
   let upcomingHours = new UpcomingHoursChart(apiResponse);
-  detailCard.appendChild(upcomingHours.upcomingHoursGrid);
+  detailCard.appendChild(upcomingHours.upcomingHoursContainer);
 
   infoGrid.appendChild(detailCard);
   await upcomingHours.drawChart();

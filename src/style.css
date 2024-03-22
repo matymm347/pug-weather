@@ -291,7 +291,7 @@ p {
 }
 
 #upcoming-hours-container {
-  display: grid;
+  overflow: auto;
   margin: 30px;
   padding: 30px;
   background-color: white;
