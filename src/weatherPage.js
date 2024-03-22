@@ -560,14 +560,14 @@ async function setUpDetailCard(infoGrid, apiResponse) {
 }
 
 async function getApiData(locationId) {
-  let apiURL = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API_KEY}&q=id:${locationId}&days=3&aqi=no&alerts=no`;
+  let apiURL = `http://api.weatherapi.com/v1/forecast.json?key=a5e4fed568014feea07121139242401&q=id:${locationId}&days=3&aqi=no&alerts=no`;
   return await fetch(apiURL, { mode: "cors" }).then((response) =>
     response.json()
   );
 }
 
 function getCurrentTemerature(locationId) {
-  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=id:${locationId}&aqi=no`;
+  let apiUrl = `http://api.weatherapi.com/v1/current.json?key=a5e4fed568014feea07121139242401&q=id:${locationId}&aqi=no`;
 
   fetch(apiUrl, { mode: "cors" })
     .then(function (response) {
