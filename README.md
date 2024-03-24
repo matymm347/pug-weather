@@ -1,5 +1,8 @@
 <h1>Pug Weather</h1>
 Weather website project powered by weatherapi.com.
+<p>
+  Page deployed under a link: <a href="https://matymm347.github.io/pug-weather/dist/index.html" title="Pug Weather">Pug Weather</a>
+</p>
 <p></p>
 <h1>Current functionalities</h1>
 
