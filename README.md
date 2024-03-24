@@ -14,3 +14,8 @@ For a given city show:
 <h1>How to build</h1>
 To install all dependencies simply use npm install.
 With all dependcies installed just run npx webpack.
+
+<p></p>
+<p></p>
+
+Powered by <a href="https://www.weatherapi.com/" title="Free Weather API">WeatherAPI.com</a>
