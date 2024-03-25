@@ -361,27 +361,6 @@ class UpcomingHoursChart {
     }
 
     this.drawChart = function () {
-      // Chart.register({
-      //   id: "customImageTicks",
-      //   beforeDraw: function (chart, args, options) {
-      //     const { ctx, chartArea } = chart;
-
-      //     // Draw ticks with images
-      //     labelsList.forEach((label, index) => {
-      //       const x = chart.scales.x.getPixelForValue(label.time);
-      //       const y = chartArea.top - 70; // Adjust as needed
-      //       const imgSize = 40;
-
-      //       const img = new Image(imgSize, imgSize);
-      //       img.src = labelsList[index].icon;
-      //       console.log("Index is: " + index);
-      //       img.onload = function () {
-      //         ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
-      //       };
-      //     });
-      //   },
-      // });
-
       let iconPlugin = {
         id: "iconPlugin",
         beforeDraw: function (chart) {
@@ -547,6 +526,35 @@ function setUpWelcomeBanner() {
   return welcomeBanner;
 }
 
+class HumidityIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "humidity-indicator";
+
+    let banner = document.createElement("a");
+    banner.textContent = "Humidity";
+    this.container.appendChild(banner);
+
+    let humidityText = document.createElement("a");
+    humidityText.textContent = apiResponse.current.humidity + "%";
+    this.container.appendChild(humidityText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
+function setUpMoreDetailsGrid(apiResponse) {
+  let container = document.createElement("div");
+  container.id = "more-details-grid";
+
+  let humidityIndicator = new HumidityIndicator(apiResponse);
+  container.appendChild(humidityIndicator.domGrid);
+
+  return container;
+}
+
 async function setUpDetailCard(infoGrid, apiResponse) {
   let detailCard = document.createElement("div");
   detailCard.id = "detail-card";
@@ -556,7 +564,9 @@ async function setUpDetailCard(infoGrid, apiResponse) {
   detailCard.appendChild(upcomingHours.upcomingHoursContainer);
 
   infoGrid.appendChild(detailCard);
-  await upcomingHours.drawChart();
+  upcomingHours.drawChart();
+
+  detailCard.appendChild(setUpMoreDetailsGrid(apiResponse));
 }
 
 async function getApiData(locationId) {
