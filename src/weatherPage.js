@@ -518,6 +518,35 @@ function setUpWelcomeBanner() {
   return welcomeBanner;
 }
 
+class HumidityIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "humidity-indicator";
+
+    let banner = document.createElement("a");
+    banner.textContent = "Humidity";
+    this.container.appendChild(banner);
+
+    let humidityText = document.createElement("a");
+    humidityText.textContent = apiResponse.current.humidity + "%";
+    this.container.appendChild(humidityText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
+function setUpMoreDetailsGrid(apiResponse) {
+  let container = document.createElement("div");
+  container.id = "more-details-grid";
+
+  let humidityIndicator = new HumidityIndicator(apiResponse);
+  container.appendChild(humidityIndicator.domGrid);
+
+  return container;
+}
+
 async function setUpDetailCard(infoGrid, apiResponse) {
   let detailCard = document.createElement("div");
   detailCard.id = "detail-card";
@@ -527,7 +556,9 @@ async function setUpDetailCard(infoGrid, apiResponse) {
   detailCard.appendChild(upcomingHours.upcomingHoursContainer);
 
   infoGrid.appendChild(detailCard);
-  await upcomingHours.drawChart();
+  upcomingHours.drawChart();
+
+  detailCard.appendChild(setUpMoreDetailsGrid(apiResponse));
 }
 
 async function getApiData(locationId) {
