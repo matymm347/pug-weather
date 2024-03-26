@@ -7,6 +7,7 @@ import sunSetSvg from "./graphics/weather-icons-34-svgrepo-com.svg";
 import sunRiseSvg from "./graphics/weather-icons-35-svgrepo-com.svg";
 import locationSvg from "./graphics/location-svgrepo-com.svg";
 import pugSVG from "./graphics/pug-svgrepo-com.svg";
+import humiditySvg from "./graphics/humidity-svgrepo-com.svg";
 
 class TempSwitch {
   constructor() {
@@ -524,16 +525,58 @@ class HumidityIndicator {
     this.container.id = "humidity-indicator";
 
     let banner = document.createElement("a");
+    banner.id = "humidity-banner";
     banner.textContent = "Humidity";
+    let humidityIcon = document.createElement("img");
+    humidityIcon.src = humiditySvg;
+    humidityIcon.id = "humidity-svg-element";
+    banner.appendChild(humidityIcon);
     this.container.appendChild(banner);
 
     let humidityText = document.createElement("a");
+    humidityText.id = "humidity-text";
     humidityText.textContent = apiResponse.current.humidity + "%";
     this.container.appendChild(humidityText);
+
+    this.setupIndicatorBar(apiResponse.current.humidity);
   }
 
   get domGrid() {
     return this.container;
+  }
+
+  setupIndicatorBar(humidity) {
+    function drawLowBar(humidity, container) {
+      let vessel = document.createElement("div");
+      vessel.className = "humidity-bar-vessel";
+      container.appendChild(vessel);
+
+      let fill = document.createElement("div");
+      fill.className = "humidity-bar-fill";
+    }
+
+    let barSection = document.createElement("div");
+    container.id = "indicator-bar";
+
+    let lowColumn = document.createElement("div");
+    lowColumn.className = "humidity-indicator-column";
+    let conditionTextLow = document.createElement("a");
+    conditionTextLow.textContent = "low";
+    drawLowBar(humidity, barSection);
+    barSection.appendChild(lowColumn);
+
+    let optimalColumn = document.createElement("div");
+    optimalColumn.className = "humidity-indicator-column";
+    let conditionTextOptimal = document.createElement("a");
+    conditionTextOptimal.textContent = "medium";
+    barSection.appendChild(optimalColumn);
+
+    let highColumn = document.createElement("div");
+    highColumn.className = "humidity-indicator-column";
+    let conditionTextHigh = document.createElement("a");
+    conditionTextHigh.textContent = "high";
+    barSection.appendChild(highColumn);
+    this.container.appendChild(barSection);
   }
 }
 

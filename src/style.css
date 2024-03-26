@@ -311,5 +311,40 @@ p {
   flex-direction: column;
   background-color: white;
   margin: 20px;
+  padding: 20px;
   border-radius: 40px;
+}
+
+#humidity-banner {
+  display: flex;
+  justify-content: space-between;
+}
+
+#humidity-svg-element {
+  width: 20px;
+  height: 20px;
+}
+
+#humidity-text {
+  align-self: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+#indicator-bar {
+  display: flex;
+}
+
+.humidity-indicator-column {
+  display: flex;
+  border: solid 1px black;
+}
+
+.humidity-bar-vessel {
+  height: 15px;
+  background-color: #9dc3ef;
+  border-radius: 15px;
+}
+
+.humidity-bar-fill {
 }
