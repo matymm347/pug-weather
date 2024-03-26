@@ -361,27 +361,6 @@ class UpcomingHoursChart {
     }
 
     this.drawChart = function () {
-      // Chart.register({
-      //   id: "customImageTicks",
-      //   beforeDraw: function (chart, args, options) {
-      //     const { ctx, chartArea } = chart;
-
-      //     // Draw ticks with images
-      //     labelsList.forEach((label, index) => {
-      //       const x = chart.scales.x.getPixelForValue(label.time);
-      //       const y = chartArea.top - 70; // Adjust as needed
-      //       const imgSize = 40;
-
-      //       const img = new Image(imgSize, imgSize);
-      //       img.src = labelsList[index].icon;
-      //       console.log("Index is: " + index);
-      //       img.onload = function () {
-      //         ctx.drawImage(img, x - img.width / 2, y, img.width, img.height);
-      //       };
-      //     });
-      //   },
-      // });
-
       let iconPlugin = {
         id: "iconPlugin",
         beforeDraw: function (chart) {
@@ -444,14 +423,6 @@ class UpcomingHoursChart {
                 color: "rgb(0, 0, 0)",
                 z: 1,
               },
-              // ticks: {
-              //   callback: function (value, index, ticks) {
-              //     let time = labelsList[index].time;
-              //     let precip = labelsList[index].precip + "%";
-              //     return [time, precip];
-              //   },
-              //   autoskip: false,
-              // },
             },
             y: {
               min: -5,
