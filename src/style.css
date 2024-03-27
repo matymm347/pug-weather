@@ -337,13 +337,17 @@ p {
 
 .humidity-indicator-column {
   display: flex;
-  border: solid 1px black;
+  flex-direction: column;
+  flex-grow: 1;
+  font-size: 12px;
 }
 
 .humidity-bar-vessel {
   height: 15px;
+  flex-grow: 1;
   background-color: #9dc3ef;
   border-radius: 15px;
+  margin: 2px;
 }
 
 .humidity-bar-fill {

@@ -547,6 +547,36 @@ class HumidityIndicator {
 
   setupIndicatorBar(humidity) {
     function drawLowBar(humidity, container) {
+      let banner = document.createElement("a");
+      banner.textContent = "Low";
+      container.appendChild(banner);
+
+      let vessel = document.createElement("div");
+      vessel.className = "humidity-bar-vessel";
+      container.appendChild(vessel);
+
+      let fill = document.createElement("div");
+      fill.className = "humidity-bar-fill";
+    }
+
+    function drawOptimalBar(humidity, container) {
+      let banner = document.createElement("a");
+      banner.textContent = "Optimal";
+      container.appendChild(banner);
+
+      let vessel = document.createElement("div");
+      vessel.className = "humidity-bar-vessel";
+      container.appendChild(vessel);
+
+      let fill = document.createElement("div");
+      fill.className = "humidity-bar-fill";
+    }
+
+    function drawHighBar(humidity, container) {
+      let banner = document.createElement("a");
+      banner.textContent = "High";
+      container.appendChild(banner);
+
       let vessel = document.createElement("div");
       vessel.className = "humidity-bar-vessel";
       container.appendChild(vessel);
@@ -556,19 +586,20 @@ class HumidityIndicator {
     }
 
     let barSection = document.createElement("div");
-    container.id = "indicator-bar";
+    barSection.id = "indicator-bar";
 
     let lowColumn = document.createElement("div");
     lowColumn.className = "humidity-indicator-column";
     let conditionTextLow = document.createElement("a");
     conditionTextLow.textContent = "low";
-    drawLowBar(humidity, barSection);
+    drawLowBar(humidity, lowColumn);
     barSection.appendChild(lowColumn);
 
     let optimalColumn = document.createElement("div");
     optimalColumn.className = "humidity-indicator-column";
     let conditionTextOptimal = document.createElement("a");
     conditionTextOptimal.textContent = "medium";
+    drawOptimalBar(humidity, optimalColumn);
     barSection.appendChild(optimalColumn);
 
     let highColumn = document.createElement("div");
@@ -576,6 +607,7 @@ class HumidityIndicator {
     let conditionTextHigh = document.createElement("a");
     conditionTextHigh.textContent = "high";
     barSection.appendChild(highColumn);
+    drawHighBar(humidity, highColumn);
     this.container.appendChild(barSection);
   }
 }
