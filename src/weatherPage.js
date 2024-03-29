@@ -8,6 +8,7 @@ import sunRiseSvg from "./graphics/weather-icons-35-svgrepo-com.svg";
 import locationSvg from "./graphics/location-svgrepo-com.svg";
 import pugSVG from "./graphics/pug-svgrepo-com.svg";
 import humiditySvg from "./graphics/humidity-svgrepo-com.svg";
+import windArch from "./graphics/windSemiCircle.svg";
 
 class TempSwitch {
   constructor() {
@@ -177,6 +178,7 @@ class CityRow {
     this.sunSet.appendChild(this.sunSetIcon);
 
     this.date = document.createElement("div");
+    this.date.id = "city-row-date";
     this.date.className = "city-row-elements";
     this.changeDate(0, apiResponse);
 
@@ -525,20 +527,23 @@ class WindIndicator {
     this.container.id = "wind-indicator";
     this.container.className = "more-details-grid-element";
 
-    let indicatorContainer = document.createElement("div");
-    this.container.appendChild(indicatorContainer);
+    // Create SVG element
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.style.alignSelf = "center";
+    svg.setAttribute("width", "200");
+    svg.setAttribute("height", "100");
 
-    let indicatorArch = document.createElement("div");
-    indicatorArch.id = "wind-indicator-arch";
-    indicatorContainer.appendChild(indicatorArch);
+    // Create path element for the arch
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M 5,100 A 90,90 0 0 1 195,100");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "black");
+    path.setAttribute("stroke-width", "10");
 
-    let archCover = document.createElement("div");
-    archCover.id = "arch-cover";
-    indicatorContainer.appendChild(archCover);
+    // Append path to SVG
+    svg.appendChild(path);
 
-    let indicatorWheel = document.createElement("div");
-    indicatorWheel.id = "indicator-wheel";
-    indicatorContainer.appendChild(indicatorWheel);
+    this.container.appendChild(svg);
   }
 
   get domGrid() {
