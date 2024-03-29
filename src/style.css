@@ -102,6 +102,12 @@ p {
   height: 100vh;
 }
 
+@media only screen and (max-width: 1300px) {
+  #info-grid {
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr;
+  }
+}
 #now-card {
   overflow: hidden;
   position: relative;
@@ -306,7 +312,7 @@ p {
   border: 1px solid black;
 }
 
-#humidity-indicator {
+.more-details-grid-element {
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -329,6 +335,7 @@ p {
   align-self: center;
   font-weight: bold;
   font-size: 25px;
+  margin-block: 10px;
 }
 
 #indicator-bar {
@@ -340,15 +347,53 @@ p {
   flex-direction: column;
   flex-grow: 1;
   font-size: 12px;
-}
-
-.humidity-bar-vessel {
-  height: 15px;
-  flex-grow: 1;
-  background-color: #9dc3ef;
-  border-radius: 15px;
   margin: 2px;
 }
 
 .humidity-bar-fill {
+  height: 15px;
+  border-radius: 15px;
+  margin: 2px;
+  background-color: #5c9ce5;
+}
+
+#wind-indicator {
+  height: 100px;
+}
+
+#wind-indicator-arch {
+  align-self: center;
+  width: 200px;
+  height: 100px;
+  background-color: #f0f0f0;
+  border-top-left-radius: 100px 100px;
+  border-top-right-radius: 100px 100px;
+}
+
+#arch-cover {
+  align-self: center;
+  position: relative;
+  background-color: black;
+  top: -90px;
+  z-index: 1;
+
+  width: 170px;
+  height: 90px;
+  background-color: white;
+  border-top-left-radius: 90px 90px;
+  border-top-right-radius: 90px 90px;
+}
+
+#indicator-wheel {
+  align-self: center;
+  position: relative;
+  top: -190px;
+  width: 200px;
+  height: 100px;
+  background-color: #5c9ce5;
+  border-top-left-radius: 100px 100px;
+  border-top-right-radius: 100px 100px;
+  z-index: 0.9;
+  transform-origin: center bottom;
+  transform: rotate(-45deg);
 }

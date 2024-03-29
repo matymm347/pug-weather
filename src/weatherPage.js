@@ -519,10 +519,38 @@ function setUpWelcomeBanner() {
   return welcomeBanner;
 }
 
+class WindIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "wind-indicator";
+    this.container.className = "more-details-grid-element";
+
+    let indicatorContainer = document.createElement("div");
+    this.container.appendChild(indicatorContainer);
+
+    let indicatorArch = document.createElement("div");
+    indicatorArch.id = "wind-indicator-arch";
+    indicatorContainer.appendChild(indicatorArch);
+
+    let archCover = document.createElement("div");
+    archCover.id = "arch-cover";
+    indicatorContainer.appendChild(archCover);
+
+    let indicatorWheel = document.createElement("div");
+    indicatorWheel.id = "indicator-wheel";
+    indicatorContainer.appendChild(indicatorWheel);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
 class HumidityIndicator {
   constructor(apiResponse) {
     this.container = document.createElement("div");
     this.container.id = "humidity-indicator";
+    this.container.className = "more-details-grid-element";
 
     let banner = document.createElement("a");
     banner.id = "humidity-banner";
@@ -551,12 +579,17 @@ class HumidityIndicator {
       banner.textContent = "Low";
       container.appendChild(banner);
 
-      let vessel = document.createElement("div");
-      vessel.className = "humidity-bar-vessel";
-      container.appendChild(vessel);
-
       let fill = document.createElement("div");
       fill.className = "humidity-bar-fill";
+      container.appendChild(fill);
+
+      if (humidity > 30) {
+        fill.style.width = "100%";
+        return;
+      }
+
+      // bar scaling 0 - 30
+      fill.style.width = `${(humidity * 100) / 30}%`;
     }
 
     function drawOptimalBar(humidity, container) {
@@ -564,12 +597,22 @@ class HumidityIndicator {
       banner.textContent = "Optimal";
       container.appendChild(banner);
 
-      let vessel = document.createElement("div");
-      vessel.className = "humidity-bar-vessel";
-      container.appendChild(vessel);
-
       let fill = document.createElement("div");
       fill.className = "humidity-bar-fill";
+      container.appendChild(fill);
+
+      if (humidity < 30) {
+        fill.style.width = "0%";
+        return;
+      }
+
+      if (humidity > 50) {
+        fill.style.width = "100%";
+        return;
+      }
+
+      // bar scaling 30 - 50
+      fill.style.width = `${humidity - 30 * 5}%`;
     }
 
     function drawHighBar(humidity, container) {
@@ -577,12 +620,17 @@ class HumidityIndicator {
       banner.textContent = "High";
       container.appendChild(banner);
 
-      let vessel = document.createElement("div");
-      vessel.className = "humidity-bar-vessel";
-      container.appendChild(vessel);
-
       let fill = document.createElement("div");
       fill.className = "humidity-bar-fill";
+      container.appendChild(fill);
+
+      if (humidity < 50) {
+        fill.style.width = "0%";
+        return;
+      }
+
+      // bar scaling 50 - 100
+      fill.style.width = `${(humidity - 50) * 2}%`;
     }
 
     let barSection = document.createElement("div");
@@ -617,7 +665,9 @@ function setUpMoreDetailsGrid(apiResponse) {
   container.id = "more-details-grid";
 
   let humidityIndicator = new HumidityIndicator(apiResponse);
+  let windIndicator = new WindIndicator(apiResponse);
   container.appendChild(humidityIndicator.domGrid);
+  container.appendChild(windIndicator.domGrid);
 
   return container;
 }
@@ -677,6 +727,7 @@ function updateWeatherPage(
 async function setUpWeatherPage(locationId) {
   const apiResponse = await getApiData(locationId);
 
+  // container home page clean up
   let container = document.querySelector("#container");
   while (container.firstChild) {
     container.removeChild(container.firstChild);
