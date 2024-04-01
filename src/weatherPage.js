@@ -505,6 +505,19 @@ async function setUpNowCard(infoGrid, apiResponse) {
   return { topRow, cityRow, tempRow, descRow };
 }
 
+function setUpMoreDetailsBanner() {
+  let moreDetailsBanner = document.createElement("div");
+  moreDetailsBanner.id = "more-details-banner";
+
+  let moreDetailsText = document.createElement("div");
+  moreDetailsText.style.fontSize = "20px";
+  moreDetailsText.style.fontWeight = "bold";
+  moreDetailsText.textContent = "More details of today's weather";
+  moreDetailsBanner.appendChild(moreDetailsText);
+
+  return moreDetailsBanner;
+}
+
 function setUpWelcomeBanner() {
   let welcomeBanner = document.createElement("div");
   welcomeBanner.id = "welcome-banner";
@@ -521,29 +534,106 @@ function setUpWelcomeBanner() {
   return welcomeBanner;
 }
 
+class ChanceOfRainIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "chance-of-rain-indicator";
+    this.container.className = "more-details-grid-element";
+
+    let banner = document.createElement("a");
+    banner.textContent = "Chance of rain";
+    this.container.appendChild(banner);
+
+    let feelsLikeText = document.createElement("a");
+    feelsLikeText.id = "chance-of-rain-text";
+    feelsLikeText.textContent =
+      apiResponse.forecast.forecastday[0].day.daily_chance_of_rain + "%";
+    this.container.appendChild(feelsLikeText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
+class FeelsLikeIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "feels-like-indicator";
+    this.container.className = "more-details-grid-element";
+
+    let banner = document.createElement("a");
+    banner.textContent = "Feels like";
+    this.container.appendChild(banner);
+
+    let feelsLikeText = document.createElement("a");
+    feelsLikeText.id = "feels-like-text";
+    feelsLikeText.textContent = apiResponse.current.feelslike_c + "°";
+    this.container.appendChild(feelsLikeText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
+class UVIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "uv-indicator";
+    this.container.className = "more-details-grid-element";
+
+    let banner = document.createElement("a");
+    banner.textContent = "UV Index";
+    this.container.appendChild(banner);
+
+    let uvText = document.createElement("a");
+    uvText.id = "uv-text";
+    uvText.textContent = apiResponse.current.uv;
+    this.container.appendChild(uvText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
+class PrecipIndicator {
+  constructor(apiResponse) {
+    this.container = document.createElement("div");
+    this.container.id = "precip-indicator";
+    this.container.className = "more-details-grid-element";
+
+    let banner = document.createElement("a");
+    banner.textContent = "Precipitation";
+    this.container.appendChild(banner);
+
+    let precipText = document.createElement("a");
+    precipText.id = "wind-text";
+    precipText.textContent =
+      apiResponse.forecast.forecastday[0].day.totalprecip_mm + " mm";
+    this.container.appendChild(precipText);
+  }
+
+  get domGrid() {
+    return this.container;
+  }
+}
+
 class WindIndicator {
   constructor(apiResponse) {
     this.container = document.createElement("div");
     this.container.id = "wind-indicator";
     this.container.className = "more-details-grid-element";
 
-    // Create SVG element
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.style.alignSelf = "center";
-    svg.setAttribute("width", "200");
-    svg.setAttribute("height", "100");
+    let banner = document.createElement("a");
+    banner.textContent = "Wind";
+    this.container.appendChild(banner);
 
-    // Create path element for the arch
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", "M 5,100 A 90,90 0 0 1 195,100");
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "black");
-    path.setAttribute("stroke-width", "10");
-
-    // Append path to SVG
-    svg.appendChild(path);
-
-    this.container.appendChild(svg);
+    let windText = document.createElement("a");
+    windText.id = "wind-text";
+    windText.textContent = apiResponse.current.wind_kph + " km/h";
+    this.container.appendChild(windText);
   }
 
   get domGrid() {
@@ -671,8 +761,16 @@ function setUpMoreDetailsGrid(apiResponse) {
 
   let humidityIndicator = new HumidityIndicator(apiResponse);
   let windIndicator = new WindIndicator(apiResponse);
+  let precipIndicator = new PrecipIndicator(apiResponse);
+  let uvIndicator = new UVIndicator(apiResponse);
+  let feelsLikeIndicator = new FeelsLikeIndicator(apiResponse);
+  let chanceOfRainIndicator = new ChanceOfRainIndicator(apiResponse);
   container.appendChild(humidityIndicator.domGrid);
   container.appendChild(windIndicator.domGrid);
+  container.appendChild(precipIndicator.domGrid);
+  container.appendChild(uvIndicator.domGrid);
+  container.appendChild(feelsLikeIndicator.domGrid);
+  container.appendChild(chanceOfRainIndicator.domGrid);
 
   return container;
 }
@@ -687,6 +785,8 @@ async function setUpDetailCard(infoGrid, apiResponse) {
 
   infoGrid.appendChild(detailCard);
   upcomingHours.drawChart();
+
+  detailCard.appendChild(setUpMoreDetailsBanner());
 
   detailCard.appendChild(setUpMoreDetailsGrid(apiResponse));
 }
