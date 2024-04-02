@@ -3,10 +3,6 @@ body {
   background-color: #b0d2f8;
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  padding: 20px;
-  margin: 0px;
-  width: 100vw;
-  height: 100vh;
 }
 
 #container {
@@ -14,13 +10,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0px;
+  padding: 0px;
+  width: 100vw;
 }
 
 #search-area {
   display: flex;
   gap: 10px;
   flex-direction: column;
-  width: 600px;
+  width: 500px;
 }
 
 #search-bar {
@@ -31,12 +30,11 @@ body {
   align-items: center;
   gap: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin: 20px;
 }
 
-@media (max-width: 300px) {
+@media (max-width: 500px) {
   #search-area {
-    width: 100%; /* Make the width 100% to fill the smaller screen */
+    width: 300px; /*handling small screens */
   }
 }
 
@@ -48,7 +46,7 @@ body {
   height: 40px;
   margin-right: 7px;
   border-radius: 50%;
-  background-color: #5650cc;
+  background-color: #5c9ce5;
 }
 
 #search-input-area {
@@ -96,25 +94,18 @@ p {
 }
 
 #search-result-section button:hover {
-  background-color: #5650cc;
+  background-color: #5c9ce5;
   color: white;
 }
 
 #info-grid {
   display: grid;
   grid-template-columns: 1.5fr 3fr;
-  /* width: 100vw;
-  height: 100vh; */
+  margin: 20px;
   border-radius: 30px;
   overflow: hidden;
 }
 
-@media only screen and (max-width: 200px) {
-  #info-grid {
-    grid-template-rows: 1fr 3fr;
-    grid-template-columns: 1fr;
-  }
-}
 #now-card {
   overflow: hidden;
   position: relative;
@@ -386,4 +377,22 @@ p {
 
 #wind-arch {
   object-fit: contain;
+}
+
+@media only screen and (max-width: 1100px) {
+  #info-grid {
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr;
+    margin: 0px;
+    border-radius: 0px;
+  }
+
+  #detail-card {
+    grid-template-rows: 100px 300px 100px 100px;
+  }
+
+  #more-details-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
 }

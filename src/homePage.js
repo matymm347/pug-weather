@@ -66,7 +66,7 @@ function replacePolishChars(inputString) {
 function createHomeTitle(container) {
   let homeTitle = document.createElement("h1");
   homeTitle.textContent = "Pug Weather";
-  homeTitle.style.color = "#5751CC";
+  homeTitle.style.color = "#5c9ce5";
   container.appendChild(homeTitle);
 
   return homeTitle;
